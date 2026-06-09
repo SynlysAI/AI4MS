@@ -1,0 +1,91 @@
+<h2>AI4MS 门户整体布局 - 你更喜欢哪个方向？</h2>
+<p class="subtitle">考虑视觉冲击力、导航清晰度和未来扩展性</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-body" style="padding: 0;">
+          <div class="mock-nav" style="display:flex;justify-content:space-between;align-items:center;padding:12px 24px;margin-bottom:0;">
+            <span style="font-weight:700;font-size:16px;">AI4MS</span>
+            <span style="display:flex;gap:20px;font-size:13px;">
+              <span>首页</span><span>应用</span><span style="color:#999;">用户管理</span>
+              <span style="border:1px solid #333;padding:2px 10px;border-radius:4px;">Admin</span>
+            </span>
+          </div>
+          <div style="padding:40px;display:flex;justify-content:center;gap:24px;">
+            <div class="placeholder" style="width:180px;height:160px;">智能谱学分析</div>
+            <div class="placeholder" style="width:180px;height:160px;">高分子研发</div>
+            <div class="placeholder" style="width:180px;height:160px;">实验自动化</div>
+          </div>
+        </div>
+        <div class="mockup-header">A. 顶部导航 + 内容居中</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>顶部导航 · 极简大气</h3>
+      <p>类似 Apple、Linear 风格。Logo 左置，导航+用户头像右置，内容区全宽居中。适合应用数少、内容聚焦的场景。后续加应用只需在导航下拉。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-body" style="padding:0;display:flex;">
+          <div class="mock-sidebar" style="width:180px;min-height:240px;display:flex;flex-direction:column;gap:12px;padding:20px;">
+            <div style="font-weight:700;font-size:15px;margin-bottom:8px;">AI4MS</div>
+            <div>🏠 首页</div>
+            <div>📱 应用中心</div>
+            <div style="color:#999;">👥 用户管理</div>
+            <div style="margin-top:auto;font-size:12px;border:1px solid #555;padding:4px 8px;border-radius:4px;text-align:center;">Admin</div>
+          </div>
+          <div style="flex:1;padding:24px;display:flex;justify-content:center;align-items:center;gap:20px;">
+            <div class="placeholder" style="width:150px;height:130px;">谱学分析</div>
+            <div class="placeholder" style="width:150px;height:130px;">高分子</div>
+            <div class="placeholder" style="width:150px;height:130px;">实验控制</div>
+          </div>
+        </div>
+        <div class="mockup-header">B. 左侧边栏 · 后台管理风格</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>侧边栏导航 · 经典后台</h3>
+      <p>类似 VSCode、Notion 风格。导航项固定左侧，内容区不受导航干扰。适合有较多管理页面、需要频繁切换的场景。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-body" style="padding:0;">
+          <div style="display:flex;justify-content:center;align-items:center;min-height:280px;flex-direction:column;gap:20px;background:linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);">
+            <div style="font-size:28px;font-weight:300;letter-spacing:4px;color:#fff;">AI<sup style="font-size:12px;">4</sup>MS</div>
+            <div style="font-size:14px;color:rgba(255,255,255,0.5);">AI for Molecular Science</div>
+            <div style="display:flex;gap:16px;margin-top:12px;">
+              <div style="padding:16px 28px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;color:#fff;text-align:center;cursor:pointer;">
+                <div style="font-size:22px;margin-bottom:6px;">🔬</div>
+                <div style="font-size:12px;">智能谱学分析</div>
+              </div>
+              <div style="padding:16px 28px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;color:#fff;text-align:center;cursor:pointer;">
+                <div style="font-size:22px;margin-bottom:6px;">🧬</div>
+                <div style="font-size:12px;">高分子研发</div>
+              </div>
+              <div style="padding:16px 28px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;color:#fff;text-align:center;cursor:pointer;">
+                <div style="font-size:22px;margin-bottom:6px;">⚙️</div>
+                <div style="font-size:12px;">实验自动化</div>
+              </div>
+            </div>
+            <div style="position:absolute;top:12px;right:20px;display:flex;gap:16px;align-items:center;color:rgba(255,255,255,0.6);font-size:12px;">
+              <span>应用</span><span style="border:1px solid rgba(255,255,255,0.3);padding:3px 10px;border-radius:4px;">Admin</span>
+            </div>
+          </div>
+        </div>
+        <div class="mockup-header">C. 沉浸式 · 全屏暗色背景</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>沉浸式全屏 · 视觉冲击</h3>
+      <p>无传统导航栏，Logo+应用卡片居中悬浮在深色渐变背景之上。右上角极简功能入口。第一印象震撼，适合门户定位。后续加应用直接在卡片区扩展。</p>
+    </div>
+  </div>
+</div>

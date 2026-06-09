@@ -1,0 +1,63 @@
+<h2>AI4MS 前端架构方案对比</h2>
+<p class="subtitle">三个完整技术组合，选择一个方向</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Vite SPA · shadcn/ui · Zustand <span style="font-size:12px;color:#38bdf8;margin-left:8px;">推荐</span></h3>
+      <p>React 18 + Vite + Tailwind CSS + <strong>shadcn/ui</strong> + Framer Motion + <strong>Zustand</strong> + React Router v7</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>优势</h4><ul>
+          <li>shadcn/ui 提供 Radix 级无障碍组件，同时完全可控样式，适合深色主题定制</li>
+          <li>Zustand 极简状态管理，比 Context 性能好，比 Redux 代码少</li>
+          <li>Vite 开发体验极快，HMR 秒级</li>
+          <li>纯 SPA，部署简单（FastAPI 直接托管 dist/）</li>
+        </ul></div>
+        <div class="cons"><h4>注意</h4><ul>
+          <li>无 SSR，SEO 不重要（门户不面向搜索引擎）</li>
+          <li>shadcn/ui 需手动引入组件，初始搭建稍慢</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Next.js · Radix · 全栈前端</h3>
+      <p>Next.js 15 + Tailwind CSS + Radix UI + Framer Motion + Next Auth + Server Actions</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>优势</h4><ul>
+          <li>SSR/SSG 支持，首屏加载快</li>
+          <li>App Router 文件系统路由，约定优于配置</li>
+          <li>Server Actions 可以直接在组件中写后端逻辑</li>
+        </ul></div>
+        <div class="cons"><h4>注意</h4><ul>
+          <li>门户无 SEO 需求，SSR 是额外复杂度</li>
+          <li>需要 Node.js 服务器，不能简单托管在 FastAPI 静态文件目录</li>
+          <li>Server Actions 与已有 FastAPI 后端功能重叠</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Vite SPA · 全自定义组件 · 极简依赖</h3>
+      <p>React 18 + Vite + Tailwind CSS + Framer Motion + Zustand，所有 UI 组件手写</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>优势</h4><ul>
+          <li>最少依赖，bundle 最小</li>
+          <li>100% 设计自由，不依赖任何组件库风格</li>
+        </ul></div>
+        <div class="cons"><h4>注意</h4><ul>
+          <li>Modal、Dropdown、Dialog、Toast 等常见交互需从零写</li>
+          <li>无障碍性需自行处理</li>
+          <li>开发效率低于有组件库支撑的方案</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+</div>

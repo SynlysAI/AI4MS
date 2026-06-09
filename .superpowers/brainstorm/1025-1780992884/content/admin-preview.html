@@ -1,0 +1,119 @@
+<h2>管理后台 — 用户管理 & 邀请码管理</h2>
+<p class="subtitle">仅 admin 可见，从右上角用户菜单进入</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">用户管理</div>
+    <div class="mockup-body" style="padding:0;background:linear-gradient(135deg, #0c0c0c 0%, #0f0f0f 30%, #0d1b2a 70%, #0a1628 100%);min-height:380px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-20%;right:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(59,130,246,0.04),transparent 70%);pointer-events:none;"></div>
+
+      <!-- 顶部栏 -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.05);position:relative;z-index:10;">
+        <div style="display:flex;gap:24px;">
+          <span style="font-size:13px;color:#93c5fd;border-bottom:1px solid rgba(59,130,246,0.3);padding-bottom:8px;">用户列表</span>
+          <span style="font-size:13px;color:rgba(255,255,255,0.3);padding-bottom:8px;">邀请码管理</span>
+        </div>
+        <span style="font-size:11px;color:rgba(255,255,255,0.2);">共 12 个用户</span>
+      </div>
+
+      <!-- 表格 -->
+      <div style="padding:16px 24px;position:relative;z-index:10;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead>
+            <tr style="color:rgba(255,255,255,0.3);text-align:left;">
+              <th style="padding:10px 12px;font-weight:400;">用户名</th>
+              <th style="padding:10px 12px;font-weight:400;">角色</th>
+              <th style="padding:10px 12px;font-weight:400;">状态</th>
+              <th style="padding:10px 12px;font-weight:400;">创建时间</th>
+              <th style="padding:10px 12px;font-weight:400;">操作</th>
+            </tr>
+          </thead>
+          <tbody style="color:rgba(255,255,255,0.6);">
+            <tr style="border-top:1px solid rgba(255,255,255,0.04);">
+              <td style="padding:10px 12px;">admin</td>
+              <td style="padding:10px 12px;"><span style="background:rgba(59,130,246,0.15);color:#93c5fd;padding:2px 8px;border-radius:10px;font-size:10px;">管理员</span></td>
+              <td style="padding:10px 12px;"><span style="color:#6ee7b7;">● 正常</span></td>
+              <td style="padding:10px 12px;color:rgba(255,255,255,0.3);">2026-05-01</td>
+              <td style="padding:10px 12px;color:rgba(255,255,255,0.2);">—</td>
+            </tr>
+            <tr style="border-top:1px solid rgba(255,255,255,0.04);">
+              <td style="padding:10px 12px;">zhangsan</td>
+              <td style="padding:10px 12px;"><span style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:2px 8px;border-radius:10px;font-size:10px;">用户</span></td>
+              <td style="padding:10px 12px;"><span style="color:#6ee7b7;">● 正常</span></td>
+              <td style="padding:10px 12px;color:rgba(255,255,255,0.3);">2026-05-15</td>
+              <td style="padding:10px 12px;"><span style="color:#f87171;cursor:pointer;">禁用</span></td>
+            </tr>
+            <tr style="border-top:1px solid rgba(255,255,255,0.04);">
+              <td style="padding:10px 12px;">lisi</td>
+              <td style="padding:10px 12px;"><span style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:2px 8px;border-radius:10px;font-size:10px;">用户</span></td>
+              <td style="padding:10px 12px;"><span style="color:#f87171;">● 已禁用</span></td>
+              <td style="padding:10px 12px;color:rgba(255,255,255,0.3);">2026-05-20</td>
+              <td style="padding:10px 12px;"><span style="color:#6ee7b7;cursor:pointer;">启用</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">邀请码管理</div>
+    <div class="mockup-body" style="padding:0;background:linear-gradient(135deg, #0c0c0c 0%, #0f0f0f 30%, #0d1b2a 70%, #0a1628 100%);min-height:380px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-20%;right:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(139,92,246,0.04),transparent 70%);pointer-events:none;"></div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.05);position:relative;z-index:10;">
+        <div style="display:flex;gap:24px;">
+          <span style="font-size:13px;color:rgba(255,255,255,0.3);padding-bottom:8px;">用户列表</span>
+          <span style="font-size:13px;color:#c4b5fd;border-bottom:1px solid rgba(139,92,246,0.3);padding-bottom:8px;">邀请码管理</span>
+        </div>
+        <span style="background:rgba(139,92,246,0.15);color:#c4b5fd;padding:6px 14px;border-radius:6px;font-size:11px;cursor:pointer;border:1px solid rgba(139,92,246,0.2);">+ 生成邀请码</span>
+      </div>
+
+      <div style="padding:16px 24px;position:relative;z-index:10;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead>
+            <tr style="color:rgba(255,255,255,0.3);text-align:left;">
+              <th style="padding:10px 12px;font-weight:400;">邀请码</th>
+              <th style="padding:10px 12px;font-weight:400;">角色</th>
+              <th style="padding:10px 12px;font-weight:400;">已用/上限</th>
+              <th style="padding:10px 12px;font-weight:400;">过期时间</th>
+              <th style="padding:10px 12px;font-weight:400;">操作</th>
+            </tr>
+          </thead>
+          <tbody style="color:rgba(255,255,255,0.6);">
+            <tr style="border-top:1px solid rgba(255,255,255,0.04);">
+              <td style="padding:10px 12px;font-family:monospace;color:#c4b5fd;">inv_3fa2b8c1</td>
+              <td style="padding:10px 12px;"><span style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:2px 8px;border-radius:10px;font-size:10px;">用户</span></td>
+              <td style="padding:10px 12px;">3 / 10</td>
+              <td style="padding:10px 12px;color:rgba(255,255,255,0.3);">2026-06-15</td>
+              <td style="padding:10px 12px;"><span style="color:#f87171;cursor:pointer;">禁用</span></td>
+            </tr>
+            <tr style="border-top:1px solid rgba(255,255,255,0.04);">
+              <td style="padding:10px 12px;font-family:monospace;color:#c4b5fd;">inv_7d1a9e4f</td>
+              <td style="padding:10px 12px;"><span style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);padding:2px 8px;border-radius:10px;font-size:10px;">用户</span></td>
+              <td style="padding:10px 12px;">10 / 10</td>
+              <td style="padding:10px 12px;color:rgba(255,255,255,0.3);">2026-06-08</td>
+              <td style="padding:10px 12px;color:rgba(255,255,255,0.15);">已用完</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 生成弹窗示意 -->
+      <div style="margin:12px 24px;padding:12px 16px;background:rgba(139,92,246,0.05);border:1px dashed rgba(139,92,246,0.15);border-radius:10px;position:relative;z-index:10;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);">点击上方按钮弹出 Dialog：设置角色 / 最大使用次数 / 有效期，生成后显示完整邀请码</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px;">
+  <h3>设计要点</h3>
+  <ul style="color:rgba(255,255,255,0.6);line-height:2;">
+    <li><strong>Tab 切换</strong> — 用户列表 / 邀请码管理 顶部 tab，无需跳页</li>
+    <li><strong>表格风格</strong> — 极简线条表，暗色行分隔线，hover 行略微高亮</li>
+    <li><strong>状态标签</strong> — 正常绿色圆点，禁用红色，管理员蓝色 badge，用户灰色 badge</li>
+    <li><strong>创建邀请码</strong> — shadcn/ui Dialog 弹窗，选择角色+次数+有效期，生成后显示完整邀请码文案</li>
+    <li><strong>操作按钮</strong> — 启用/禁用为文字链接，无笨重按钮，保持表格干净</li>
+  </ul>
+</div>
