@@ -27,6 +27,13 @@ __pycache__/
 .venv/
 venv/
 
+# Python packages
+*.egg-info/
+
+# Tools
+.superpowers/
+.runtime/
+
 # Logs
 *.log
 npm-debug.log*
