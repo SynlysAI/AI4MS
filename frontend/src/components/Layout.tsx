@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
 import StarFieldBg from '@/components/StarFieldBg'
 import UserNav from '@/components/UserNav'
@@ -7,10 +7,21 @@ import UserNav from '@/components/UserNav'
 /** 全局布局：深空背景 + 粒子动画 + 光晕 + 顶部导航栏。 */
 export default function Layout() {
   const initialize = useAuthStore((s) => s.initialize)
+  const logout = useAuthStore((s) => s.logout)
   const isInitialized = useAuthStore((s) => s.isInitialized)
   const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => { initialize() }, [initialize])
+
+  useEffect(() => {
+    const handleAuthExpired = () => {
+      logout()
+      navigate('/login')
+    }
+    window.addEventListener('ai4ms-auth-expired', handleAuthExpired)
+    return () => window.removeEventListener('ai4ms-auth-expired', handleAuthExpired)
+  }, [logout, navigate])
 
   if (!isInitialized) {
     return (
@@ -38,7 +49,7 @@ export default function Layout() {
       }} />
       {!isAuthPage && (
         <nav className="relative z-20 flex items-center justify-between px-8 py-4 border-b border-white/4">
-          <button onClick={() => window.location.href = '/'} className="flex items-center gap-3">
+          <button onClick={() => navigate('/')} className="flex items-center gap-3">
             <div className="w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold text-white"
                  style={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)' }}>M</div>
             <span className="text-sm font-light tracking-[3px] text-white/85">

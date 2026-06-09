@@ -54,17 +54,20 @@ async def register_endpoint(req: RegisterRequest):
 @router.get("/me")
 async def get_me(user: dict = Depends(get_current_user_optional)):
     """获取当前登录用户状态及全局鉴权配置。"""
+    user_info = None
+    if user:
+        user_info = {
+            "user_id": user["user_id"],
+            "username": user["username"],
+            "role": user["role"],
+            "status": user.get("status", "active"),
+            "organization": user.get("organization", ""),
+        }
     return {
         "code": 0,
         "message": "成功",
         "data": {
             "auth_enabled": settings.auth_enabled,
-            "user": {
-                "user_id": user["user_id"],
-                "username": user["username"],
-                "role": user["role"],
-                "status": user.get("status", "active"),
-                "organization": user.get("organization", ""),
-            } if user else None,
+            "user": user_info,
         },
     }

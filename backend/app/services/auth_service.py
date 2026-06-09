@@ -32,7 +32,10 @@ def _verify_password(password: str, stored_hash: str) -> bool:
     同时支持旧版纯 SHA256 格式的兼容验证。
     """
     if "$" not in stored_hash:
-        return hashlib.sha256(password.encode()).hexdigest() == stored_hash
+        return hmac.compare_digest(
+            hashlib.sha256(password.encode()).hexdigest(),
+            stored_hash,
+        )
     try:
         algo, iterations_str, salt_hex, hash_hex = stored_hash.split("$")
         if algo != "pbkdf2_sha256":
