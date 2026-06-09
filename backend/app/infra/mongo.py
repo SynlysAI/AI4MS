@@ -17,17 +17,22 @@ def init_mongo(uri: str, db_name: str) -> None:
 
 def close_mongo() -> None:
     """关闭 MongoDB 连接。"""
-    global _client
+    global _client, _db
     if _client:
         _client.close()
         _client = None
+    _db = None
 
 
 def get_users_collection() -> Collection:
     """获取 users 集合。"""
+    if _db is None:
+        raise RuntimeError("数据库未初始化，请先调用 init_mongo()")
     return _db.get_collection("users")
 
 
 def get_invite_codes_collection() -> Collection:
     """获取 invite_codes 集合。"""
+    if _db is None:
+        raise RuntimeError("数据库未初始化，请先调用 init_mongo()")
     return _db.get_collection("invite_codes")
