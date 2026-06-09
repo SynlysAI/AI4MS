@@ -102,5 +102,7 @@ async def disable_invite_code(
     admin: dict = Depends(require_admin),
 ):
     """禁用邀请码（仅管理员）。"""
-    InviteCodeRepository.disable(invite_id)
+    matched = InviteCodeRepository.disable(invite_id)
+    if matched == 0:
+        raise HTTPException(status_code=404, detail="邀请码不存在")
     return ApiResponse(message="邀请码已禁用")

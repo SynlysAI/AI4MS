@@ -73,6 +73,8 @@ def register(invite_code: str, username: str, password: str,
         raise ValueError("用户名已存在")
 
     updated = InviteCodeRepository.atomic_consume(invite["invite_id"])
+    if updated is None:
+        raise ValueError("邀请码已被使用或已过期")
 
     try:
         password_hash = _hash_password(password)

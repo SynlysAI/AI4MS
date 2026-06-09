@@ -107,10 +107,20 @@ class InviteCodeRepository:
 
     @staticmethod
     def atomic_consume(invite_id: str) -> Optional[dict]:
-        """原子消费邀请码（used_count + 1），返回更新后的文档或 None。"""
+        """原子消费邀请码（used_count + 1），返回更新后的文档或 None。
+
+        通过在 filter 中内联校验状态、过期时间和次数上限，
+        确保并发场景下不会超发。
+        """
+        now = datetime.now(UTC)
         return InviteCodeRepository.get_collection().find_one_and_update(
-            {"invite_id": invite_id},
-            {"$inc": {"used_count": 1}, "$set": {"updated_at": datetime.now(UTC)}},
+            {
+                "invite_id": invite_id,
+                "status": "active",
+                "expires_at": {"$gt": now},
+                "$expr": {"$lt": ["$used_count", "$max_uses"]},
+            },
+            {"$inc": {"used_count": 1}, "$set": {"updated_at": now}},
             return_document=ReturnDocument.AFTER,
         )
 
@@ -123,11 +133,13 @@ class InviteCodeRepository:
         )
 
     @staticmethod
-    def disable(invite_id: str) -> None:
-        InviteCodeRepository.get_collection().update_one(
+    def disable(invite_id: str) -> int:
+        """禁用邀请码，返回匹配的文档数（0 或 1）。"""
+        result = InviteCodeRepository.get_collection().update_one(
             {"invite_id": invite_id},
             {"$set": {"status": "disabled", "updated_at": datetime.now(UTC)}},
         )
+        return result.matched_count
 
     @staticmethod
     def list_all() -> list[dict]:
