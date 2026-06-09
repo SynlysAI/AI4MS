@@ -1,6 +1,6 @@
 """用户与邀请码 Pydantic 领域模型。"""
 
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -18,8 +18,8 @@ class UserRecord(BaseModel):
     role: UserRole = "user"
     status: UserStatus = "active"
     organization: str = ""  # 单位（注册时填写）
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     last_login_at: datetime | None = None
     created_by: str | None = None  # 注册时使用的邀请码创建人
 
@@ -48,5 +48,5 @@ class InviteCodeRecord(BaseModel):
     max_uses: int = 10
     used_count: int = 0
     created_by: str      # 创建人 user_id
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))

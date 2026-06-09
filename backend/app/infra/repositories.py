@@ -1,9 +1,10 @@
 """用户与邀请码数据仓储层。"""
 
 import secrets
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Optional
 
+from pymongo import ReturnDocument
 from pymongo.collection import Collection
 from pymongo.errors import DuplicateKeyError
 
@@ -41,8 +42,8 @@ class UserRepository:
             "role": role,
             "status": "active",
             "organization": organization,
-            "created_at": datetime.utcnow(),
-            "updated_at": datetime.utcnow(),
+            "created_at": datetime.now(UTC),
+            "updated_at": datetime.now(UTC),
             "last_login_at": None,
             "created_by": created_by,
         }
@@ -54,7 +55,7 @@ class UserRepository:
 
     @staticmethod
     def update_login_time(user_id: str) -> None:
-        now = datetime.utcnow()
+        now = datetime.now(UTC)
         UserRepository.get_collection().update_one(
             {"user_id": user_id},
             {"$set": {"last_login_at": now, "updated_at": now}},
@@ -64,7 +65,7 @@ class UserRepository:
     def update_status(user_id: str, status: UserStatus) -> None:
         UserRepository.get_collection().update_one(
             {"user_id": user_id},
-            {"$set": {"status": status, "updated_at": datetime.utcnow()}},
+            {"$set": {"status": status, "updated_at": datetime.now(UTC)}},
         )
 
     @staticmethod
@@ -95,10 +96,13 @@ class InviteCodeRepository:
             "max_uses": max_uses,
             "used_count": 0,
             "created_by": created_by,
-            "created_at": datetime.utcnow(),
-            "updated_at": datetime.utcnow(),
+            "created_at": datetime.now(UTC),
+            "updated_at": datetime.now(UTC),
         }
-        InviteCodeRepository.get_collection().insert_one(doc)
+        try:
+            InviteCodeRepository.get_collection().insert_one(doc)
+        except DuplicateKeyError:
+            raise ValueError("邀请码冲突，请重试")
         return InviteCodeRecord(**doc)
 
     @staticmethod
@@ -106,15 +110,15 @@ class InviteCodeRepository:
         """原子消费邀请码（used_count + 1），返回更新后的文档或 None。"""
         return InviteCodeRepository.get_collection().find_one_and_update(
             {"invite_id": invite_id},
-            {"$inc": {"used_count": 1}, "$set": {"updated_at": datetime.utcnow()}},
-            return_document=True,
+            {"$inc": {"used_count": 1}, "$set": {"updated_at": datetime.now(UTC)}},
+            return_document=ReturnDocument.AFTER,
         )
 
     @staticmethod
     def rollback_usage(invite_id: str) -> None:
         """回滚计数器（注册失败时调用）。"""
         InviteCodeRepository.get_collection().update_one(
-            {"invite_id": invite_id},
+            {"invite_id": invite_id, "used_count": {"$gt": 0}},
             {"$inc": {"used_count": -1}},
         )
 
@@ -122,7 +126,7 @@ class InviteCodeRepository:
     def disable(invite_id: str) -> None:
         InviteCodeRepository.get_collection().update_one(
             {"invite_id": invite_id},
-            {"$set": {"status": "disabled", "updated_at": datetime.utcnow()}},
+            {"$set": {"status": "disabled", "updated_at": datetime.now(UTC)}},
         )
 
     @staticmethod

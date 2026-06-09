@@ -9,10 +9,14 @@ _db: Database | None = None
 
 
 def init_mongo(uri: str, db_name: str) -> None:
-    """初始化 MongoDB 连接，在应用启动时调用一次。"""
+    """初始化 MongoDB 连接，确保唯一索引存在。"""
     global _client, _db
     _client = MongoClient(uri)
     _db = _client[db_name]
+    _db["users"].create_index("username", unique=True, name="idx_username_unique")
+    _db["users"].create_index("user_id", unique=True, name="idx_user_id_unique")
+    _db["invite_codes"].create_index("invite_code", unique=True, name="idx_invite_code_unique")
+    _db["invite_codes"].create_index("invite_id", unique=True, name="idx_invite_id_unique")
 
 
 def close_mongo() -> None:
