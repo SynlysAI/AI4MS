@@ -25,10 +25,6 @@ function persistToken(token: string) {
   sessionStorage.setItem(TOKEN_KEY, token)
 }
 
-function getStoredToken(): string | null {
-  return sessionStorage.getItem(TOKEN_KEY)
-}
-
 function clearToken() {
   sessionStorage.removeItem(TOKEN_KEY)
 }
