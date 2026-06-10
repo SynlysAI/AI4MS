@@ -98,46 +98,61 @@ git clone <repo-url>
 cd AI4MS
 ```
 
-### 2. 启动后端
+### 2. 安装依赖
 
 ```bash
+# 后端
 cd backend
-
-# 安装依赖
 pip install -r requirements.txt
 
-# 配置环境变量
-cp .env.example .env
-# 编辑 .env，设置 AUTH_SECRET 和 MongoDB 连接信息
-
-# 创建管理员账号
-python scripts/create_admin.py admin <your-password>
-
-# 启动开发服务器（端口 8000）
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+# 前端
+cd ../frontend
+npm install
 ```
 
-### 3. 启动前端
+### 3. 配置环境变量
 
 ```bash
+cd ../backend
+cp .env.example .env
+# 编辑 .env，设置 AUTH_SECRET 和 MongoDB 连接信息
+```
+
+### 4. 创建管理员账号
+
+```bash
+python scripts/create_admin.py admin <your-password>
+```
+
+### 5. 启动
+
+**开发模式**（前后端分离，支持热更新）：
+
+```bash
+# 终端 1：启动后端（端口 8000）
+cd backend
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+# 终端 2：启动前端 dev server（端口 5173，API 代理到 8000）
 cd frontend
-
-# 安装依赖
-npm install
-
-# 启动开发服务器（端口 5173，API 代理到 8000）
 npm run dev
 ```
 
-浏览器打开 `http://localhost:5173`，使用刚才创建的管理员账号登录。
+浏览器打开 `http://localhost:5173`。
 
-### 4. 生产构建
+**生产部署**（单端口，FastAPI 托管前端静态文件）：
 
 ```bash
+# 1. 构建前端
 cd frontend
-npm run build        # tsc + vite build，输出到 dist/
-npm run preview      # 预览生产构建
+npm run build
+
+# 2. 启动后端（同时提供 API 和前端页面）
+cd ../backend
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
+
+浏览器打开 `http://<IP>:8000`，一个端口搞定。
 
 ## 环境变量
 
