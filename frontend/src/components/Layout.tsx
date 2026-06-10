@@ -9,6 +9,7 @@ import UserNav from '@/components/UserNav'
 export default function Layout() {
   const initialize = useAuthStore((s) => s.initialize)
   const isInitialized = useAuthStore((s) => s.isInitialized)
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
   const theme = useThemeStore((s) => s.theme)
   const toggleTheme = useThemeStore((s) => s.toggle)
   const location = useLocation()
@@ -150,7 +151,29 @@ export default function Layout() {
               )}
             </button>
 
-            <UserNav />
+            {isAuthenticated ? (
+              <UserNav />
+            ) : (
+              <Link
+                to="/login"
+                className="text-xs tracking-wide transition-colors duration-200
+                           px-3 py-1.5 rounded-lg"
+                style={{
+                  color: 'var(--text-secondary)',
+                  border: `1px solid var(--border-input)`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'var(--text-primary)'
+                  e.currentTarget.style.borderColor = 'var(--border-strong)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'var(--text-secondary)'
+                  e.currentTarget.style.borderColor = 'var(--border-input)'
+                }}
+              >
+                登录
+              </Link>
+            )}
           </div>
         </nav>
       )}

@@ -61,9 +61,10 @@ export default function LoginPage() {
                style={{ color: 'var(--text-primary)' }}>
             AI<sup className="text-[8px] tracking-[1px] font-light">4</sup>MS
           </div>
-          <div className="text-[11px] mt-1.5 tracking-[1px] transition-colors duration-300"
-               style={{ color: 'var(--text-muted)' }}>
-            统一研发门户
+          <div className="mt-2 text-[10px] leading-relaxed tracking-wide transition-colors duration-300"
+               style={{ color: 'var(--text-muted)', opacity: 0.7 }}>
+            嘉庚创新实验室材料研发统一入口<br />
+            集成智能谱学分析、高分子研发、实验自动化监控
           </div>
         </div>
 

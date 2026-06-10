@@ -53,11 +53,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/',
-        element: (
-          <AuthGuard>
-            <HomePage />
-          </AuthGuard>
-        ),
+        element: <HomePage />,
       },
       {
         path: '/admin/users',
