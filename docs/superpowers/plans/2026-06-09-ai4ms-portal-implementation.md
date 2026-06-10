@@ -131,7 +131,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': 'http://127.0.0.1:8001',
+      '/api': 'http://127.0.0.1:8000',
     },
   },
 })
@@ -372,9 +372,9 @@ async def health_check():
 ```bash
 cd E:/github_project/AI4MS/backend
 pip install -r requirements.txt
-python -m uvicorn app.main:app --port 8001 --reload &
+python -m uvicorn app.main:app --port 8000 --reload &
 sleep 2
-curl http://localhost:8001/health
+curl http://localhost:8000/health
 # Expected: {"status":"ok","service":"ai4ms-portal"}
 ```
 
@@ -1054,15 +1054,15 @@ router = APIRouter()
 ```bash
 # 启动后端
 cd E:/github_project/AI4MS/backend
-python -m uvicorn app.main:app --port 8001 &
+python -m uvicorn app.main:app --port 8000 &
 sleep 2
 
 # 测试 /api/v1/auth/me（未登录）
-curl -s http://localhost:8001/api/v1/auth/me | python -m json.tool
+curl -s http://localhost:8000/api/v1/auth/me | python -m json.tool
 # Expected: {"code":0,"data":{"auth_enabled":true,"user":null},...}
 
 # 测试登录（无用户时预期 401）
-curl -s -X POST http://localhost:8001/api/v1/auth/login \
+curl -s -X POST http://localhost:8000/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"wrong"}' | python -m json.tool
 # Expected: 401 detail: "用户名或密码错误"
@@ -2744,23 +2744,23 @@ python scripts/create_admin.py admin admin123
 ```bash
 # 1. 启动后端
 cd E:/github_project/AI4MS/backend
-python -m uvicorn app.main:app --port 8001 &
+python -m uvicorn app.main:app --port 8000 &
 sleep 2
 
 # 2. 测试登录
-curl -s -X POST http://localhost:8001/api/v1/auth/login \
+curl -s -X POST http://localhost:8000/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"admin123"}'
 # Expected: {"code":0,"message":"成功","data":{"token":"...","user":{...}}}
 
 # 3. 保存 token 后测试 /me
 TOKEN="<从登录结果获取>"
-curl -s http://localhost:8001/api/v1/auth/me \
+curl -s http://localhost:8000/api/v1/auth/me \
   -H "Authorization: Bearer $TOKEN"
 # Expected: 返回用户信息
 
 # 4. 测试用户列表
-curl -s http://localhost:8001/api/v1/admin/users \
+curl -s http://localhost:8000/api/v1/admin/users \
   -H "Authorization: Bearer $TOKEN"
 # Expected: 返回用户数组
 

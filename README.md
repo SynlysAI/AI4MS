@@ -113,8 +113,8 @@ cp .env.example .env
 # 创建管理员账号
 python scripts/create_admin.py admin <your-password>
 
-# 启动开发服务器（端口 8001）
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+# 启动开发服务器（端口 8000）
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 ### 3. 启动前端
@@ -125,7 +125,7 @@ cd frontend
 # 安装依赖
 npm install
 
-# 启动开发服务器（端口 5173，API 代理到 8001）
+# 启动开发服务器（端口 5173，API 代理到 8000）
 npm run dev
 ```
 
