@@ -19,10 +19,11 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="AI4MS Portal", version="0.1.0", lifespan=lifespan)
 
+cors_origins = [o.strip() for o in settings.cors_origins.split(",")]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[o.strip() for o in settings.cors_origins.split(",")],
-    allow_credentials=True,
+    allow_origins=cors_origins,
+    allow_credentials="*" not in cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )

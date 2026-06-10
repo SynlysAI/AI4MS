@@ -114,7 +114,7 @@ cp .env.example .env
 python scripts/create_admin.py admin <your-password>
 
 # 启动开发服务器（端口 8001）
-python -m uvicorn app.main:app --port 8001 --reload
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
 ```
 
 ### 3. 启动前端
