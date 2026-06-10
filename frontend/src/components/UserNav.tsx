@@ -33,10 +33,20 @@ export default function UserNav() {
       <button
         onClick={() => setOpen(!open)}
         className="w-8 h-8 rounded-full flex items-center justify-center
-                   text-xs text-white/60 font-medium cursor-pointer
-                   bg-white/[0.06] border border-white/[0.08]
-                   hover:bg-white/[0.10] hover:border-white/[0.14]
-                   transition-all duration-200"
+                   text-xs font-medium cursor-pointer transition-all duration-200"
+        style={{
+          background: 'var(--bg-input)',
+          border: `1px solid var(--border-input)`,
+          color: 'var(--text-secondary)',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'var(--bg-hover)'
+          e.currentTarget.style.borderColor = 'var(--border-strong)'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'var(--bg-input)'
+          e.currentTarget.style.borderColor = 'var(--border-input)'
+        }}
       >
         {initial}
       </button>
@@ -45,14 +55,22 @@ export default function UserNav() {
       {open && (
         <div
           className="absolute right-0 top-full mt-2 w-48 rounded-xl overflow-hidden
-                     bg-[#151515]/95 backdrop-blur-xl border border-white/[0.08]
-                     shadow-2xl shadow-black/50 z-50 animate-in fade-in zoom-in-95
+                     shadow-2xl shadow-black/20 z-50 animate-in fade-in zoom-in-95
                      origin-top-right duration-150"
+          style={{
+            background: 'var(--bg-dropdown)',
+            border: `1px solid var(--border-default)`,
+          }}
         >
           {/* 用户信息 */}
-          <div className="px-4 py-3 border-b border-white/[0.06]">
-            <div className="text-xs text-white/75 font-medium">{user?.username}</div>
-            <div className="text-[10px] text-white/30 mt-0.5">
+          <div
+            className="px-4 py-3"
+            style={{ borderBottom: `1px solid var(--border-subtle)` }}
+          >
+            <div className="text-xs font-medium" style={{ color: 'var(--text-primary)' }}>
+              {user?.username}
+            </div>
+            <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>
               {user?.role === 'admin' ? '管理员' : '用户'}
               {user?.organization ? ` · ${user.organization}` : ''}
             </div>
@@ -64,25 +82,47 @@ export default function UserNav() {
               <>
                 <button
                   onClick={() => { navigate('/admin/users'); setOpen(false) }}
-                  className="w-full text-left px-4 py-2.5 text-xs text-white/50
-                             hover:bg-white/[0.04] hover:text-white/75 transition-colors"
+                  className="w-full text-left px-4 py-2.5 text-xs transition-colors duration-150"
+                  style={{ color: 'var(--text-secondary)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'var(--bg-hover)'
+                    e.currentTarget.style.color = 'var(--text-primary)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.color = 'var(--text-secondary)'
+                  }}
                 >
                   用户管理
                 </button>
                 <button
                   onClick={() => { navigate('/admin/invites'); setOpen(false) }}
-                  className="w-full text-left px-4 py-2.5 text-xs text-white/50
-                             hover:bg-white/[0.04] hover:text-white/75 transition-colors"
+                  className="w-full text-left px-4 py-2.5 text-xs transition-colors duration-150"
+                  style={{ color: 'var(--text-secondary)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'var(--bg-hover)'
+                    e.currentTarget.style.color = 'var(--text-primary)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.color = 'var(--text-secondary)'
+                  }}
                 >
                   邀请码管理
                 </button>
-                <div className="mx-3 my-1 border-t border-white/[0.05]" />
+                <div className="mx-3 my-1" style={{ borderTop: `1px solid var(--border-subtle)` }} />
               </>
             )}
             <button
               onClick={handleLogout}
-              className="w-full text-left px-4 py-2.5 text-xs text-red-400/60
-                         hover:bg-red-400/[0.06] hover:text-red-400/80 transition-colors"
+              className="w-full text-left px-4 py-2.5 text-xs transition-colors duration-150"
+              style={{ color: 'var(--danger)' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'var(--danger-bg)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent'
+              }}
             >
               退出登录
             </button>

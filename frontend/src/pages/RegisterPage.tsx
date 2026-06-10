@@ -40,110 +40,84 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative px-4">
-      {/* 居中卡片 */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: 'easeOut' }}
         className="relative z-10 w-full max-w-[380px] rounded-2xl p-10
-                   bg-white/[0.02] border border-white/[0.06]
-                   backdrop-blur-xl shadow-2xl shadow-black/40"
+                   backdrop-blur-xl shadow-2xl shadow-black/10
+                   transition-colors duration-300"
+        style={{
+          background: 'var(--bg-surface)',
+          border: `1px solid var(--border-default)`,
+        }}
       >
-        {/* 标题 */}
         <div className="text-center mb-7">
-          <div className="text-lg font-light tracking-[3px] text-white/85">
+          <div className="text-lg font-light tracking-[3px] transition-colors duration-300"
+               style={{ color: 'var(--text-primary)' }}>
             创建账号
           </div>
-          <div className="text-[11px] text-white/25 mt-1.5 tracking-[1px]">
+          <div className="text-[11px] mt-1.5 tracking-[1px] transition-colors duration-300"
+               style={{ color: 'var(--text-muted)' }}>
             需要有效的邀请码
           </div>
         </div>
 
-        {/* 表单 */}
         <form onSubmit={handleSubmit} className="space-y-3.5">
           {/* 邀请码 */}
-          <div>
-            <label className="text-[11px] text-white/35 mb-1.5 block tracking-wide">
-              邀请码 <span className="text-red-400/50">*</span>
-            </label>
-            <input
-              type="text"
+          <Field label="邀请码" required>
+            <Input
               value={inviteCode}
               onChange={(e) => setInviteCode(e.target.value)}
               placeholder="请输入邀请码"
-              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg
-                         px-3.5 py-2.5 text-sm text-white/70 placeholder:text-white/[0.12]
-                         focus:outline-none focus:border-purple-400/30 focus:bg-white/[0.04]
-                         transition-all duration-200"
             />
-          </div>
+          </Field>
 
           {/* 用户名 */}
-          <div>
-            <label className="text-[11px] text-white/35 mb-1.5 block tracking-wide">
-              用户名 <span className="text-red-400/50">*</span>
-            </label>
-            <input
-              type="text"
+          <Field label="用户名" required>
+            <Input
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="请输入用户名"
               autoComplete="username"
-              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg
-                         px-3.5 py-2.5 text-sm text-white/70 placeholder:text-white/[0.12]
-                         focus:outline-none focus:border-purple-400/30 focus:bg-white/[0.04]
-                         transition-all duration-200"
             />
-          </div>
+          </Field>
 
           {/* 密码 */}
-          <div>
-            <label className="text-[11px] text-white/35 mb-1.5 block tracking-wide">
-              密码 <span className="text-red-400/50">*</span>
-            </label>
-            <input
+          <Field label="密码" required>
+            <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="请输入密码"
               autoComplete="new-password"
-              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg
-                         px-3.5 py-2.5 text-sm text-white/70 placeholder:text-white/[0.12]
-                         focus:outline-none focus:border-purple-400/30 focus:bg-white/[0.04]
-                         transition-all duration-200"
             />
-          </div>
+          </Field>
 
-          {/* 单位（选填） */}
-          <div>
-            <label className="text-[11px] text-white/35 mb-1.5 block tracking-wide">
-              单位 <span className="text-white/15">(选填)</span>
-            </label>
-            <input
-              type="text"
+          {/* 单位 */}
+          <Field label="单位" optional>
+            <Input
               value={organization}
               onChange={(e) => setOrganization(e.target.value)}
               placeholder="请输入所在单位"
-              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg
-                         px-3.5 py-2.5 text-sm text-white/70 placeholder:text-white/[0.12]
-                         focus:outline-none focus:border-purple-400/30 focus:bg-white/[0.04]
-                         transition-all duration-200"
             />
-          </div>
+          </Field>
 
-          {/* 错误提示 */}
           {error && (
             <motion.div
               initial={{ opacity: 0, x: -6 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-xs text-red-400/80 bg-red-400/[0.06] rounded-lg px-3 py-2
-                         border border-red-400/[0.10]"
+              className="text-xs rounded-lg px-3 py-2"
+              style={{
+                color: 'var(--danger)',
+                background: 'var(--danger-bg)',
+                border: `1px solid var(--danger-border)`,
+              }}
             >
               {error}
             </motion.div>
           )}
 
-          {/* 注册按钮 — 紫色调 */}
           <motion.button
             type="submit"
             disabled={loading}
@@ -151,29 +125,66 @@ export default function RegisterPage() {
             whileTap={{ scale: 0.99 }}
             className="w-full rounded-lg py-2.5 text-sm font-medium tracking-[1px]
                        text-white transition-all duration-200
-                       disabled:opacity-50 disabled:cursor-not-allowed
-                       relative overflow-hidden mt-1"
-            style={{
-              background:
-                'linear-gradient(135deg, rgba(139,92,246,0.85), rgba(59,130,246,0.85))',
-            }}
+                       disabled:opacity-50 disabled:cursor-not-allowed mt-1"
+            style={{ background: 'var(--btn-gradient-register)' }}
           >
-            <span className="relative z-10">
-              {loading ? '注册中...' : '注 册'}
-            </span>
+            {loading ? '注册中...' : '注 册'}
           </motion.button>
         </form>
 
-        {/* 底部切换链接 */}
         <div className="text-center mt-5">
           <Link
             to="/login"
-            className="text-[11px] text-white/20 hover:text-purple-400/60 transition-colors duration-200"
+            className="text-[11px] transition-colors duration-200"
+            style={{ color: 'var(--text-muted)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-purple-text)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
           >
             已有账号？返回登录 →
           </Link>
         </div>
       </motion.div>
     </div>
+  )
+}
+
+/* ── 内联小组件 ── */
+
+function Field({ label, required, optional, children }: {
+  label: string; required?: boolean; optional?: boolean; children: React.ReactNode
+}) {
+  return (
+    <div>
+      <label className="text-[11px] mb-1.5 block tracking-wide transition-colors duration-300"
+             style={{ color: 'var(--text-secondary)' }}>
+        {label}
+        {required && <span style={{ color: 'var(--danger)' }}> *</span>}
+        {optional && <span style={{ color: 'var(--text-muted)' }}> (选填)</span>}
+      </label>
+      {children}
+    </div>
+  )
+}
+
+function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <input
+      {...props}
+      className="w-full rounded-lg px-3.5 py-2.5 text-sm
+                 focus:outline-none transition-all duration-200"
+      style={{
+        background: 'var(--bg-input)',
+        border: `1px solid var(--border-input)`,
+        color: 'var(--text-primary)',
+      }}
+      onFocus={(e) => {
+        e.currentTarget.style.borderColor = 'var(--border-focus)'
+        e.currentTarget.style.background = 'var(--bg-hover)'
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.borderColor = 'var(--border-input)'
+        e.currentTarget.style.background = 'var(--bg-input)'
+      }}
+    />
   )
 }

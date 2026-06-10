@@ -2,19 +2,110 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── 全局深空科技主题 ── */
+/* ═══════════════════════════════════════════
+   暗色主题（默认）
+   ═══════════════════════════════════════════ */
 :root {
-  --bg-primary: #0c0c0c;
-  --bg-card: rgba(255, 255, 255, 0.02);
-  --border-card: rgba(255, 255, 255, 0.06);
+  --bg-root: #0c0c0c;
+  --bg-root-gradient: linear-gradient(135deg, #0c0c0c 0%, #0f0f0f 30%, #0d1b2a 70%, #0a1628 100%);
+  --bg-surface: rgba(255, 255, 255, 0.02);
+  --bg-surface-elevated: #131313;
+  --bg-input: rgba(255, 255, 255, 0.03);
+  --bg-hover: rgba(255, 255, 255, 0.04);
+  --bg-dropdown: #151515;
+  --bg-badge: rgba(255, 255, 255, 0.04);
+  --bg-badge-admin: rgba(59, 130, 246, 0.10);
+
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-default: rgba(255, 255, 255, 0.06);
+  --border-input: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.10);
+  --border-focus: rgba(59, 130, 246, 0.30);
+
   --text-primary: rgba(255, 255, 255, 0.85);
   --text-secondary: rgba(255, 255, 255, 0.45);
-  --text-muted: rgba(255, 255, 255, 0.2);
-  --blue-400: #60a5fa;
-  --purple-400: #c4b5fd;
-  --emerald-400: #6ee7b7;
+  --text-muted: rgba(255, 255, 255, 0.20);
+  --text-placeholder: rgba(255, 255, 255, 0.12);
+
+  --glow-blue: rgba(59, 130, 246, 0.07);
+  --glow-purple: rgba(139, 92, 246, 0.05);
+  --glow-green: rgba(16, 185, 129, 0.03);
+
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --accent-green: #10b981;
+  --accent-blue-text: #93c5fd;
+  --accent-purple-text: #c4b5fd;
+  --accent-green-text: #6ee7b7;
+
+  --success: rgba(110, 231, 183, 0.65);
+  --danger: rgba(248, 113, 113, 0.60);
+  --danger-hover: rgba(248, 113, 113, 0.75);
+  --danger-bg: rgba(248, 113, 113, 0.05);
+  --danger-border: rgba(248, 113, 113, 0.08);
+
+  --scrollbar-thumb: rgba(255, 255, 255, 0.08);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.12);
+
+  --spinner-track: rgba(255, 255, 255, 0.06);
+  --spinner-accent: rgba(59, 130, 246, 0.60);
+
+  --btn-gradient-login: linear-gradient(135deg, rgba(59,130,246,0.85), rgba(139,92,246,0.85));
+  --btn-gradient-register: linear-gradient(135deg, rgba(139,92,246,0.85), rgba(59,130,246,0.85));
 }
 
+/* ═══════════════════════════════════════════
+   亮色主题
+   ═══════════════════════════════════════════ */
+html.light {
+  --bg-root: #f1f5f9;
+  --bg-root-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 30%, #e8eef4 70%, #eef2f6 100%);
+  --bg-surface: rgba(255, 255, 255, 0.70);
+  --bg-surface-elevated: #ffffff;
+  --bg-input: rgba(0, 0, 0, 0.02);
+  --bg-hover: rgba(0, 0, 0, 0.03);
+  --bg-dropdown: #ffffff;
+  --bg-badge: rgba(0, 0, 0, 0.04);
+  --bg-badge-admin: rgba(59, 130, 246, 0.10);
+
+  --border-subtle: rgba(0, 0, 0, 0.04);
+  --border-default: rgba(0, 0, 0, 0.06);
+  --border-input: rgba(0, 0, 0, 0.10);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --border-focus: rgba(59, 130, 246, 0.40);
+
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --text-placeholder: rgba(0, 0, 0, 0.20);
+
+  --glow-blue: rgba(59, 130, 246, 0.06);
+  --glow-purple: rgba(139, 92, 246, 0.04);
+  --glow-green: rgba(16, 185, 129, 0.02);
+
+  --accent-blue-text: #2563eb;
+  --accent-purple-text: #7c3aed;
+  --accent-green-text: #059669;
+
+  --success: #059669;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --danger-bg: rgba(220, 38, 38, 0.05);
+  --danger-border: rgba(220, 38, 38, 0.12);
+
+  --scrollbar-thumb: rgba(0, 0, 0, 0.10);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.16);
+
+  --spinner-track: rgba(0, 0, 0, 0.06);
+  --spinner-accent: rgba(59, 130, 246, 0.60);
+
+  --btn-gradient-login: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  --btn-gradient-register: linear-gradient(135deg, #8b5cf6, #3b82f6);
+}
+
+/* ═══════════════════════════════════════════
+   全局基础样式
+   ═══════════════════════════════════════════ */
 * {
   margin: 0;
   padding: 0;
@@ -22,18 +113,19 @@
 }
 
 html {
-  background: #0c0c0c;
+  background: var(--bg-root);
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #0c0c0c 0%, #0f0f0f 30%, #0d1b2a 70%, #0a1628 100%);
+  background: var(--bg-root-gradient);
   background-attachment: fixed;
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 #root {
@@ -42,18 +134,14 @@ body {
 }
 
 /* ── 自定义滚动条 ── */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* ── 选中颜色 ── */
@@ -66,8 +154,8 @@ body {
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.7);
-  -webkit-box-shadow: 0 0 0px 1000px #1a1a2e inset;
+  -webkit-text-fill-color: var(--text-primary);
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-surface-elevated) inset;
   transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -89,14 +177,22 @@ select {
   background-position: right 12px center;
   padding-right: 36px !important;
 }
+html.light select {
+  color-scheme: light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(0,0,0,0.35)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
 select option {
   background: #1a1a1a;
   color: rgba(255, 255, 255, 0.7);
 }
+html.light select option {
+  background: #ffffff;
+  color: #1e293b;
+}
 
 /* ── 聚焦环 ── */
 *:focus-visible {
-  outline: 1px solid rgba(59, 130, 246, 0.3);
+  outline: 1px solid var(--border-focus);
   outline-offset: 2px;
 }
 
@@ -105,21 +201,13 @@ select option {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-6px); }
 }
-
 @keyframes pulse-glow {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 0.7; }
 }
-
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
-}
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }

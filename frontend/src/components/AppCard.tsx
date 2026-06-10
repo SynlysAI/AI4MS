@@ -49,7 +49,8 @@ export default function AppCard({
     >
       {/* 顶部发光线 */}
       <div
-        className="absolute top-0 left-0 right-0 h-px opacity-50 group-hover:opacity-100 transition-opacity duration-500"
+        className="absolute top-0 left-0 right-0 h-px opacity-50 group-hover:opacity-100
+                   transition-opacity duration-500"
         style={{
           background: `linear-gradient(90deg, transparent, ${accentColor}99, transparent)`,
         }}
@@ -63,7 +64,8 @@ export default function AppCard({
       >
         {name}
       </div>
-      <div className="text-[11px] text-white/25 leading-relaxed mb-5 space-y-0.5">
+      <div className="text-[11px] leading-relaxed mb-5 space-y-0.5"
+           style={{ color: 'var(--text-muted)' }}>
         {description.map((line, i) => (
           <div key={i}>{line}</div>
         ))}

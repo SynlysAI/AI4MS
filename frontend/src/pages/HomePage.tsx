@@ -8,7 +8,7 @@ const APPS = [
     description: ['NMR · IR · Raman', 'GPC · LCMS'],
     icon: '🔬',
     accentColor: '#3b82f6',
-    accentTextClass: '#93c5fd',
+    accentTextClass: 'var(--accent-blue-text)',
     url: 'https://specagent.wumiaox.com',
   },
   {
@@ -16,7 +16,7 @@ const APPS = [
     description: ['配方设计 · 工艺优化', '性能预测 · 实验方案'],
     icon: '🧬',
     accentColor: '#8b5cf6',
-    accentTextClass: '#c4b5fd',
+    accentTextClass: 'var(--accent-purple-text)',
     url: 'https://specpoly.wumiaox.com',
   },
   {
@@ -24,12 +24,11 @@ const APPS = [
     description: ['设备管理 · 工作流编排', '参数下发 · 实时监控'],
     icon: '🖥️',
     accentColor: '#10b981',
-    accentTextClass: '#6ee7b7',
+    accentTextClass: 'var(--accent-green-text)',
     url: 'https://speclabos.wumiaox.com',
   },
 ]
 
-/* 容器动画：子元素依次淡入 */
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
@@ -38,14 +37,9 @@ const containerVariants = {
   },
 }
 
-/* 单个卡片动画 */
 const itemVariants = {
   hidden: { opacity: 0, y: 32 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: 'easeOut' },
-  },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: 'easeOut' } },
 }
 
 /** 门户首页 — 品牌标题 + 三张应用卡片启动器。 */
@@ -59,12 +53,12 @@ export default function HomePage() {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className="text-center mb-14"
       >
-        <h1 className="text-[40px] font-extralight tracking-[8px] text-white/85 select-none">
+        <h1 className="text-[40px] font-extralight tracking-[8px] select-none transition-colors duration-300"
+            style={{ color: 'var(--text-primary)' }}>
           AI
           <sup className="text-[14px] tracking-[2px] font-light">4</sup>
           MS
         </h1>
-        {/* 分割线 */}
         <div
           className="w-[110px] h-px mx-auto my-3.5"
           style={{
@@ -72,7 +66,8 @@ export default function HomePage() {
               'linear-gradient(90deg, transparent, rgba(59,130,246,0.45), transparent)',
           }}
         />
-        <p className="text-sm font-light tracking-[2px] text-white/30">
+        <p className="text-sm font-light tracking-[2px] transition-colors duration-300"
+           style={{ color: 'var(--text-muted)' }}>
           AI for Molecular Science
         </p>
       </motion.div>
@@ -96,7 +91,8 @@ export default function HomePage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.6 }}
-        className="mt-16 text-[11px] text-white/[0.12] tracking-[1px]"
+        className="mt-16 text-[11px] tracking-[1px] transition-colors duration-300"
+        style={{ color: 'var(--text-muted)', opacity: 0.6 }}
       >
         点击卡片进入对应平台
       </motion.p>
