@@ -4,6 +4,7 @@ node_modules/
 # Build output
 dist/
 build/
+*.tsbuildinfo
 
 # Environment
 .env
@@ -33,6 +34,8 @@ venv/
 # Tools
 .superpowers/
 .runtime/
+.playwright-cli
+.codegraph
 
 # Logs
 *.log
