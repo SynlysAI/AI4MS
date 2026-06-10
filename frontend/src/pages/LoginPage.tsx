@@ -24,7 +24,7 @@ export default function LoginPage() {
       await login(username, password)
       navigate('/')
     } catch (err: any) {
-      const detail = err?.response?.data?.detail
+      const detail = err?.response?.data?.data?.detail
       setError(typeof detail === 'string' ? detail : '登录失败，请重试')
     } finally {
       setLoading(false)
