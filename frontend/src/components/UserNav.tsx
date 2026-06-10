@@ -24,7 +24,7 @@ export default function UserNav() {
 
   const handleLogout = () => {
     logout()
-    navigate('/')
+    navigate('/login')
   }
 
   return (
