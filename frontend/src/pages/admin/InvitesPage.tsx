@@ -18,7 +18,7 @@ export default function InvitesPage() {
   const [createError, setCreateError] = useState('')
 
   const fetchCodes = async () => {
-    try { setError(''); const res = await adminApi.listInviteCodes(); setCodes(res.data.items) }
+    try { setError(''); const res = await adminApi.listInviteCodes(); setCodes(res.data) }
     catch { setError('加载邀请码列表失败') }
     finally { setLoading(false) }
   }
@@ -32,7 +32,7 @@ export default function InvitesPage() {
       setNewCode(res.data.invite_code)
       fetchCodes()
     } catch (err: any) {
-      const detail = err?.response?.data?.data?.detail
+      const detail = err?.response?.data?.detail
       setCreateError(typeof detail === 'string' ? detail : '创建失败')
     } finally { setCreating(false) }
   }

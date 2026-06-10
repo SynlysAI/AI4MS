@@ -14,7 +14,7 @@ export default function UsersPage() {
     try {
       setError('')
       const res = await adminApi.listUsers()
-      setUsers(res.data.items)
+      setUsers(res.data)
     } catch {
       setError('加载用户列表失败')
     } finally {

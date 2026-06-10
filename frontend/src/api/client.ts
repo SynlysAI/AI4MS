@@ -41,28 +41,27 @@ export interface UserInfo {
   last_login_at?: string | null
 }
 
-/** 登录响应 data 字段 */
+/** 登录/注册响应 data 字段 */
 export interface LoginData {
-  auth_enabled: boolean
-  user_id: string
-  username: string
-  role: 'admin' | 'user'
-  status: string
-  organization?: string
-  access_token: string
-  token_type: string
-  expires_at: number
+  token: string
+  user: {
+    user_id: string
+    username: string
+    role: 'admin' | 'user'
+    organization: string
+  }
 }
 
 /** /auth/me 响应 data 字段 */
 export interface MeData {
   auth_enabled: boolean
-  authenticated: boolean
-  user_id: string
-  username: string
-  role: 'admin' | 'user'
-  status: string
-  organization?: string
+  user: {
+    user_id: string
+    username: string
+    role: 'admin' | 'user'
+    status: string
+    organization: string
+  } | null
 }
 
 export interface InviteCode {
@@ -75,12 +74,6 @@ export interface InviteCode {
   expires_at: string
   created_by?: string
   created_at?: string
-}
-
-/** 分页列表响应 */
-export interface ListData<T> {
-  total: number
-  items: T[]
 }
 
 /* ── API 响应通用结构 ── */
@@ -111,13 +104,13 @@ export const authApi = {
 
 export const adminApi = {
   listUsers: () =>
-    apiClient.get('/admin/users') as Promise<ApiResponse<ListData<UserInfo>>>,
+    apiClient.get('/admin/users') as Promise<ApiResponse<UserInfo[]>>,
 
   updateUserStatus: (userId: string, status: 'active' | 'disabled') =>
     apiClient.patch(`/admin/users/${userId}/status`, { status }),
 
   listInviteCodes: () =>
-    apiClient.get('/admin/invite-codes') as Promise<ApiResponse<ListData<InviteCode>>>,
+    apiClient.get('/admin/invite-codes') as Promise<ApiResponse<InviteCode[]>>,
 
   createInviteCode: (params: {
     role: string
