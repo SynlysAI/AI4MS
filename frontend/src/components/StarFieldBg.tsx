@@ -1,6 +1,15 @@
 import { useEffect, useRef } from 'react'
 
-/** Deep space particle background using Canvas. */
+interface Particle {
+  x: number
+  y: number
+  r: number
+  vx: number
+  vy: number
+  alpha: number
+}
+
+/** 深空粒子背景 — Canvas 绘制缓慢漂移的星点，营造太空感。 */
 export default function StarFieldBg() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -11,7 +20,7 @@ export default function StarFieldBg() {
     if (!ctx) return
 
     let animId: number
-    const particles: { x: number; y: number; r: number; vx: number; vy: number; alpha: number }[] = []
+    const particles: Particle[] = []
 
     function resize() {
       canvas!.width = window.innerWidth
@@ -20,14 +29,15 @@ export default function StarFieldBg() {
     resize()
     window.addEventListener('resize', resize)
 
-    for (let i = 0; i < 80; i++) {
+    /* 生成星点粒子 */
+    for (let i = 0; i < 100; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        r: Math.random() * 1.5 + 0.3,
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: (Math.random() - 0.5) * 0.15,
-        alpha: Math.random() * 0.4 + 0.1,
+        r: Math.random() * 1.2 + 0.2,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: (Math.random() - 0.5) * 0.12,
+        alpha: Math.random() * 0.35 + 0.08,
       })
     }
 
@@ -38,6 +48,8 @@ export default function StarFieldBg() {
         ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2)
         ctx!.fillStyle = `rgba(148, 163, 184, ${p.alpha})`
         ctx!.fill()
+
+        /* 移动并循环 */
         p.x += p.vx
         p.y += p.vy
         if (p.x < 0) p.x = canvas!.width
@@ -56,6 +68,10 @@ export default function StarFieldBg() {
   }, [])
 
   return (
-    <canvas ref={canvasRef} style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }} />
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 z-0 pointer-events-none"
+      aria-hidden="true"
+    />
   )
 }

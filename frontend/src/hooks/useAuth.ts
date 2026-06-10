@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/stores/authStore'
 
+/** 鉴权组合 hook，提供用户状态和操作方法。 */
 export function useAuth() {
   const store = useAuthStore()
   return {

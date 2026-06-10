@@ -1,71 +1,134 @@
 import { useEffect } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, Link } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
 import StarFieldBg from '@/components/StarFieldBg'
 import UserNav from '@/components/UserNav'
 
-/** 全局布局：深空背景 + 粒子动画 + 光晕 + 顶部导航栏。 */
+/** 全局布局：深空背景 + 光晕装饰 + 顶栏导航 + 页面内容。 */
 export default function Layout() {
   const initialize = useAuthStore((s) => s.initialize)
-  const logout = useAuthStore((s) => s.logout)
   const isInitialized = useAuthStore((s) => s.isInitialized)
   const location = useLocation()
-  const navigate = useNavigate()
-
-  useEffect(() => { initialize() }, [initialize])
 
   useEffect(() => {
-    const handleAuthExpired = () => {
-      logout()
-      navigate('/login')
-    }
-    window.addEventListener('ai4ms-auth-expired', handleAuthExpired)
-    return () => window.removeEventListener('ai4ms-auth-expired', handleAuthExpired)
-  }, [logout, navigate])
+    initialize()
+  }, [initialize])
 
+  /* 加载状态 */
   if (!isInitialized) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-6 h-6 border-2 border-white/10 border-t-blue-400/60 rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-[#0c0c0c]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-5 h-5 border-2 border-white/[0.08] border-t-blue-400/60 rounded-full animate-spin" />
+          <span className="text-xs text-white/20 tracking-wider">加载中</span>
+        </div>
       </div>
     )
   }
 
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register'
-  const isHome = location.pathname === '/'
 
   return (
-    <div className="min-h-screen relative" style={{
-      background: 'linear-gradient(135deg, #0c0c0c 0%, #0f0f0f 30%, #0d1b2a 70%, #0a1628 100%)',
-    }}>
+    <div className="min-h-screen relative flex flex-col">
+      {/* 主背景渐变 */}
+      <div
+        className="fixed inset-0 z-0"
+        style={{
+          background:
+            'linear-gradient(135deg, #0c0c0c 0%, #0f0f0f 30%, #0d1b2a 70%, #0a1628 100%)',
+        }}
+      />
+
+      {/* 光晕装饰 */}
+      <div
+        className="fixed pointer-events-none z-0"
+        style={{
+          top: '-20%',
+          left: '20%',
+          width: '700px',
+          height: '700px',
+          background:
+            'radial-gradient(circle, rgba(59,130,246,0.07), transparent 70%)',
+          borderRadius: '50%',
+        }}
+      />
+      <div
+        className="fixed pointer-events-none z-0"
+        style={{
+          bottom: '-15%',
+          right: '10%',
+          width: '550px',
+          height: '550px',
+          background:
+            'radial-gradient(circle, rgba(139,92,246,0.05), transparent 70%)',
+          borderRadius: '50%',
+        }}
+      />
+      <div
+        className="fixed pointer-events-none z-0"
+        style={{
+          top: '40%',
+          left: '50%',
+          width: '450px',
+          height: '450px',
+          transform: 'translate(-50%, -50%)',
+          background:
+            'radial-gradient(circle, rgba(16,185,129,0.03), transparent 70%)',
+          borderRadius: '50%',
+        }}
+      />
+
+      {/* 星场粒子 */}
       <StarFieldBg />
-      <div className="fixed pointer-events-none" style={{
-        top: '-20%', left: '20%', width: '600px', height: '600px',
-        background: 'radial-gradient(circle, rgba(59,130,246,0.06), transparent 70%)', borderRadius: '50%',
-      }} />
-      <div className="fixed pointer-events-none" style={{
-        bottom: '-15%', right: '10%', width: '500px', height: '500px',
-        background: 'radial-gradient(circle, rgba(139,92,246,0.05), transparent 70%)', borderRadius: '50%',
-      }} />
+
+      {/* 顶栏导航（非登录/注册页显示） */}
       {!isAuthPage && (
-        <nav className="relative z-20 flex items-center justify-between px-8 py-4 border-b border-white/4">
-          <button onClick={() => navigate('/')} className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold text-white"
-                 style={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)' }}>M</div>
+        <nav
+          className="relative z-20 flex items-center justify-between px-8 py-4
+                     border-b border-white/[0.04] backdrop-blur-sm"
+        >
+          <Link to="/" className="flex items-center gap-3 group">
+            {/* Logo 图标 */}
+            <div
+              className="w-7 h-7 rounded-md flex items-center justify-center
+                         text-[11px] font-bold text-white shadow-lg
+                         group-hover:scale-105 transition-transform duration-200"
+              style={{
+                background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+                boxShadow: '0 0 16px rgba(59,130,246,0.2)',
+              }}
+            >
+              M
+            </div>
+            {/* 品牌字标 */}
             <span className="text-sm font-light tracking-[3px] text-white/85">
-              AI<sup className="text-[7px] tracking-[1px]">4</sup>MS
+              AI<sup className="text-[7px] tracking-[1px] font-light">4</sup>MS
             </span>
-          </button>
+          </Link>
+
           <div className="flex items-center gap-6">
-            <a href="/" className="text-xs text-white/30 hover:text-white/50 transition-colors tracking-wide">首页</a>
+            <Link
+              to="/"
+              className="text-xs text-white/30 hover:text-white/55 transition-colors tracking-wide"
+            >
+              首页
+            </Link>
             <UserNav />
           </div>
         </nav>
       )}
-      <main className="relative z-10"><Outlet /></main>
-      {isHome && (
-        <footer className="relative z-10 text-center pb-8">
-          <span className="text-[11px] text-white/10 tracking-[1px]">Xiamen Jiageng Innovation Laboratory</span>
+
+      {/* 主内容区 */}
+      <main className="relative z-10 flex-1 flex flex-col">
+        <Outlet />
+      </main>
+
+      {/* 底部机构署名（仅首页） */}
+      {location.pathname === '/' && (
+        <footer className="relative z-10 text-center pb-8 mt-auto">
+          <span className="text-[11px] text-white/[0.10] tracking-[1px] select-none">
+            Xiamen Jiageng Innovation Laboratory
+          </span>
         </footer>
       )}
     </div>
