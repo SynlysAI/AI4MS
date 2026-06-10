@@ -52,35 +52,39 @@
 
   --btn-gradient-login: linear-gradient(135deg, rgba(59,130,246,0.85), rgba(139,92,246,0.85));
   --btn-gradient-register: linear-gradient(135deg, rgba(139,92,246,0.85), rgba(59,130,246,0.85));
+
+  --star-color: 148, 163, 184;
 }
 
 /* ═══════════════════════════════════════════
    亮色主题
    ═══════════════════════════════════════════ */
 html.light {
-  --bg-root: #f1f5f9;
-  --bg-root-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 30%, #e8eef4 70%, #eef2f6 100%);
-  --bg-surface: rgba(255, 255, 255, 0.70);
-  --bg-surface-elevated: #ffffff;
-  --bg-input: rgba(0, 0, 0, 0.02);
-  --bg-hover: rgba(0, 0, 0, 0.03);
-  --bg-dropdown: #ffffff;
-  --bg-badge: rgba(0, 0, 0, 0.04);
-  --bg-badge-admin: rgba(59, 130, 246, 0.10);
+  --bg-root: #e6e2dc;
+  --bg-root-gradient: linear-gradient(135deg, #edebe6 0%, #e9e5df 30%, #e6e2dc 70%, #e8e4de 100%);
+  --bg-surface: rgba(255, 255, 255, 0.55);
+  --bg-surface-elevated: #f4f3ef;
+  --bg-input: rgba(0, 0, 0, 0.03);
+  --bg-hover: rgba(0, 0, 0, 0.05);
+  --bg-dropdown: #f7f5f2;
+  --bg-badge: rgba(0, 0, 0, 0.05);
+  --bg-badge-admin: rgba(59, 130, 246, 0.14);
 
-  --border-subtle: rgba(0, 0, 0, 0.04);
-  --border-default: rgba(0, 0, 0, 0.06);
-  --border-input: rgba(0, 0, 0, 0.10);
-  --border-strong: rgba(0, 0, 0, 0.12);
-  --border-focus: rgba(59, 130, 246, 0.40);
+  --star-color: 115, 108, 100;
+
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-default: rgba(0, 0, 0, 0.08);
+  --border-input: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.15);
+  --border-focus: rgba(59, 130, 246, 0.45);
 
   --text-primary: #1e293b;
   --text-secondary: #64748b;
   --text-muted: #94a3b8;
-  --text-placeholder: rgba(0, 0, 0, 0.20);
+  --text-placeholder: rgba(0, 0, 0, 0.22);
 
-  --glow-blue: rgba(59, 130, 246, 0.06);
-  --glow-purple: rgba(139, 92, 246, 0.04);
+  --glow-blue: rgba(59, 130, 246, 0.05);
+  --glow-purple: rgba(139, 92, 246, 0.03);
   --glow-green: rgba(16, 185, 129, 0.02);
 
   --accent-blue-text: #2563eb;
@@ -90,14 +94,14 @@ html.light {
   --success: #059669;
   --danger: #dc2626;
   --danger-hover: #b91c1c;
-  --danger-bg: rgba(220, 38, 38, 0.05);
-  --danger-border: rgba(220, 38, 38, 0.12);
+  --danger-bg: rgba(220, 38, 38, 0.06);
+  --danger-border: rgba(220, 38, 38, 0.14);
 
-  --scrollbar-thumb: rgba(0, 0, 0, 0.10);
-  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.16);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.12);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.18);
 
-  --spinner-track: rgba(0, 0, 0, 0.06);
-  --spinner-accent: rgba(59, 130, 246, 0.60);
+  --spinner-track: rgba(0, 0, 0, 0.08);
+  --spinner-accent: rgba(59, 130, 246, 0.65);
 
   --btn-gradient-login: linear-gradient(135deg, #3b82f6, #8b5cf6);
   --btn-gradient-register: linear-gradient(135deg, #8b5cf6, #3b82f6);
@@ -186,7 +190,7 @@ select option {
   color: rgba(255, 255, 255, 0.7);
 }
 html.light select option {
-  background: #ffffff;
+  background: #f0eeea;
   color: #1e293b;
 }
 

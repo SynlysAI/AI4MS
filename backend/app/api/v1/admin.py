@@ -106,3 +106,27 @@ async def disable_invite_code(
     if matched == 0:
         raise HTTPException(status_code=404, detail="邀请码不存在")
     return ApiResponse(message="邀请码已禁用")
+
+
+@router.patch("/invite-codes/{invite_id}/enable")
+async def enable_invite_code(
+    invite_id: str,
+    admin: dict = Depends(require_admin),
+):
+    """重新启用邀请码（仅管理员）。"""
+    matched = InviteCodeRepository.enable(invite_id)
+    if matched == 0:
+        raise HTTPException(status_code=404, detail="邀请码不存在或状态不允许启用")
+    return ApiResponse(message="邀请码已启用")
+
+
+@router.delete("/invite-codes/{invite_id}")
+async def delete_invite_code(
+    invite_id: str,
+    admin: dict = Depends(require_admin),
+):
+    """删除邀请码（仅管理员）。"""
+    matched = InviteCodeRepository.delete(invite_id)
+    if matched == 0:
+        raise HTTPException(status_code=404, detail="邀请码不存在")
+    return ApiResponse(message="邀请码已删除")

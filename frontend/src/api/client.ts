@@ -120,4 +120,10 @@ export const adminApi = {
 
   disableInviteCode: (inviteId: string) =>
     apiClient.patch(`/admin/invite-codes/${inviteId}/disable`),
+
+  enableInviteCode: (inviteId: string) =>
+    apiClient.patch(`/admin/invite-codes/${inviteId}/enable`),
+
+  deleteInviteCode: (inviteId: string) =>
+    apiClient.delete(`/admin/invite-codes/${inviteId}`),
 }

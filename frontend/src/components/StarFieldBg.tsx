@@ -43,10 +43,11 @@ export default function StarFieldBg() {
 
     function draw() {
       ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
+      const starRgb = getComputedStyle(document.documentElement).getPropertyValue('--star-color').trim() || '148, 163, 184'
       for (const p of particles) {
         ctx!.beginPath()
         ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx!.fillStyle = `rgba(148, 163, 184, ${p.alpha})`
+        ctx!.fillStyle = `rgba(${starRgb}, ${p.alpha})`
         ctx!.fill()
 
         /* 移动并循环 */

@@ -73,8 +73,8 @@ export default function Layout() {
         }}
       />
 
-      {/* 星场粒子（暗色模式下更明显） */}
-      {theme === 'dark' && <StarFieldBg />}
+      {/* 星场粒子 */}
+      <StarFieldBg />
 
       {/* 顶栏导航（非登录/注册页显示） */}
       {!isAuthPage && (

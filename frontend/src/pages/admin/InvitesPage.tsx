@@ -42,6 +42,17 @@ export default function InvitesPage() {
     catch { setError('操作失败，请重试') }
   }
 
+  const handleEnable = async (inviteId: string) => {
+    try { await adminApi.enableInviteCode(inviteId); fetchCodes() }
+    catch { setError('操作失败，请重试') }
+  }
+
+  const handleDelete = async (inviteId: string) => {
+    if (!window.confirm('确定要删除该邀请码吗？此操作不可撤销。')) return
+    try { await adminApi.deleteInviteCode(inviteId); fetchCodes() }
+    catch { setError('操作失败，请重试') }
+  }
+
   const openDialog = () => { setNewCode(null); setCreateError(''); setRole('user'); setMaxUses(10); setExpiresHours(72); setShowDialog(true) }
 
   /* 通用输入框样式 */
@@ -135,13 +146,29 @@ export default function InvitesPage() {
                       </span>
                     </td>
                     <td className="px-6 py-3.5">
-                      {c.status === 'active' ? (
-                        <button onClick={() => handleDisable(c.invite_id)}
-                          className="text-xs tracking-wide transition-colors duration-200"
-                          style={{ color: 'var(--danger)' }}
-                          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--danger-hover)'}
-                          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--danger)'}>禁用</button>
-                      ) : <span className="text-xs" style={{ color: 'var(--text-muted)', opacity: 0.5 }}>—</span>}
+                      <div className="flex items-center gap-3">
+                        {c.status === 'active' && (
+                          <button onClick={() => handleDisable(c.invite_id)}
+                            className="text-xs tracking-wide transition-colors duration-200"
+                            style={{ color: 'var(--danger)' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--danger-hover)'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--danger)'}>禁用</button>
+                        )}
+                        {c.status === 'disabled' && (
+                          <button onClick={() => handleEnable(c.invite_id)}
+                            className="text-xs tracking-wide transition-colors duration-200"
+                            style={{ color: 'var(--success)' }}
+                            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}>启用</button>
+                        )}
+                        {c.status !== 'active' && (
+                          <button onClick={() => handleDelete(c.invite_id)}
+                            className="text-xs tracking-wide transition-colors duration-200"
+                            style={{ color: 'var(--text-muted)' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--danger)'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}>删除</button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))

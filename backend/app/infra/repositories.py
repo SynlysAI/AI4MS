@@ -142,5 +142,22 @@ class InviteCodeRepository:
         return result.matched_count
 
     @staticmethod
+    def enable(invite_id: str) -> int:
+        """重新启用邀请码，返回匹配的文档数（0 或 1）。"""
+        result = InviteCodeRepository.get_collection().update_one(
+            {"invite_id": invite_id, "status": "disabled"},
+            {"$set": {"status": "active", "updated_at": datetime.now(UTC)}},
+        )
+        return result.matched_count
+
+    @staticmethod
+    def delete(invite_id: str) -> int:
+        """删除邀请码，返回匹配的文档数（0 或 1）。"""
+        result = InviteCodeRepository.get_collection().delete_one(
+            {"invite_id": invite_id},
+        )
+        return result.deleted_count
+
+    @staticmethod
     def list_all() -> list[dict]:
         return list(InviteCodeRepository.get_collection().find().sort("created_at", -1))
