@@ -86,17 +86,12 @@ export default function Layout() {
         >
           <Link to="/" className="flex items-center gap-3 group">
             {/* Logo 图标 */}
-            <div
-              className="w-7 h-7 rounded-md flex items-center justify-center
-                         text-[11px] font-bold text-white shadow-lg
+            <img
+              src="/JG-logo.png"
+              alt="AI4MS"
+              className="w-7 h-7 rounded-md object-contain
                          group-hover:scale-105 transition-transform duration-200"
-              style={{
-                background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                boxShadow: '0 0 16px rgba(59,130,246,0.2)',
-              }}
-            >
-              M
-            </div>
+            />
             {/* 品牌字标 */}
             <span className="text-sm font-light tracking-[3px] transition-colors duration-300"
                   style={{ color: 'var(--text-primary)' }}>

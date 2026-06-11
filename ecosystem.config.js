@@ -8,7 +8,7 @@ module.exports = {
       name: "ai4ms-portal",
       cwd: "E:\\github_project\\AI4MS\\backend",
       script: "C:\\conda_envs\\ai4ms\\Scripts\\uvicorn.exe",
-      args: "app.main:app --host 0.0.0.0 --port 8000",
+      args: "app.main:app --host 0.0.0.0 --port 8002",
       interpreter: "none",
       watch: false,
       autorestart: true,
