@@ -84,19 +84,39 @@ export default function Layout() {
                      backdrop-blur-sm transition-colors duration-300"
           style={{ borderBottom: `1px solid var(--border-subtle)` }}
         >
-          <Link to="/" className="flex items-center gap-3 group">
-            {/* Logo 图标 */}
-            <img
-              src="/JG-logo.png"
-              alt="AI4MS"
-              className="w-7 h-7 rounded-md object-contain
-                         group-hover:scale-105 transition-transform duration-200"
-            />
+          <Link to="/" className="flex items-center gap-4 group">
             {/* 品牌字标 */}
             <span className="text-sm font-light tracking-[3px] transition-colors duration-300"
                   style={{ color: 'var(--text-primary)' }}>
               AI<sup className="text-[7px] tracking-[1px] font-light">4</sup>MS
             </span>
+            <span className="text-[10px] font-light tracking-[1px] transition-colors duration-300"
+                  style={{ color: 'var(--text-muted)' }}>
+              |
+            </span>
+            {/* 合作单位 logo */}
+            <div className="flex items-center gap-3">
+              <img
+                src="/JG-logo.png"
+                alt="嘉庚创新实验室"
+                className="h-7 w-auto"
+              />
+              <img
+                src="/厦门大学.svg"
+                alt="厦门大学"
+                className="h-7 w-auto"
+              />
+              <img
+                src="/上海人工智能实验室.png"
+                alt="上海人工智能实验室"
+                className="h-7 w-auto"
+              />
+              <img
+                src="/苏州实验室.png"
+                alt="苏州实验室"
+                className="h-7 w-auto"
+              />
+            </div>
           </Link>
 
           <div className="flex items-center gap-5">
