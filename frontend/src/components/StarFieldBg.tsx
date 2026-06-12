@@ -34,7 +34,7 @@ export default function StarFieldBg() {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        r: Math.random() * 1.2 + 0.2,
+        r: Math.random() * 1.2 + 0.4,
         vx: (Math.random() - 0.5) * 0.12,
         vy: (Math.random() - 0.5) * 0.12,
         alpha: Math.random() * 0.35 + 0.08,

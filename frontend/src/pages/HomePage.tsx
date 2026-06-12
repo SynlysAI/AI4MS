@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import AppCard from '@/components/AppCard'
+import { useThemeStore } from '@/stores/themeStore'
 
 /** 三平台应用配置。 */
 const APPS = [
@@ -44,6 +45,9 @@ const itemVariants = {
 
 /** 门户首页 — 品牌标题 + 三张应用卡片启动器。 */
 export default function HomePage() {
+  const theme = useThemeStore((s) => s.theme)
+  const darkFilter = theme === 'dark' ? 'brightness(2.6) contrast(1.3)' : undefined
+
   return (
     <div className="flex flex-col items-center justify-center flex-1 min-h-[80vh] px-6">
       {/* 品牌标题区 */}
@@ -70,6 +74,38 @@ export default function HomePage() {
            style={{ color: 'var(--text-muted)' }}>
           AI for Molecular Science
         </p>
+      </motion.div>
+
+      {/* 合作单位 */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="mb-10 flex items-center gap-8 flex-wrap justify-center"
+      >
+        <img
+          src="/JG-logo.png"
+          alt="嘉庚创新实验室"
+          className="h-11 w-auto opacity-80 hover:opacity-100 transition-opacity duration-300"
+        />
+        <img
+          src="/厦门大学.svg"
+          alt="厦门大学"
+          className="h-11 w-auto opacity-80 hover:opacity-100 transition-opacity duration-300"
+          style={{ filter: darkFilter }}
+        />
+        <img
+          src="/上海人工智能实验室.png"
+          alt="上海人工智能实验室"
+          className="h-11 w-auto opacity-80 hover:opacity-100 transition-opacity duration-300"
+          style={{ filter: darkFilter }}
+        />
+        <img
+          src="/苏州实验室.png"
+          alt="苏州实验室"
+          className="h-11 w-auto opacity-80 hover:opacity-100 transition-opacity duration-300"
+          style={{ filter: darkFilter }}
+        />
       </motion.div>
 
       {/* 应用卡片区 */}
