@@ -18,7 +18,7 @@ const APPS = [
     icon: '🧬',
     accentColor: '#8b5cf6',
     accentTextClass: 'var(--accent-purple-text)',
-    url: 'https://specpoly.wumiaox.com',
+    url: 'https://polyagent.wumiaox.com',
   },
   {
     name: '实验自动化监控',
