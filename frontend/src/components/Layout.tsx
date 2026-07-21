@@ -183,7 +183,7 @@ export default function Layout() {
         <footer className="relative z-10 text-center pb-8 mt-auto">
           <span className="text-[11px] tracking-[1px] select-none transition-colors duration-300"
                 style={{ color: 'var(--text-muted)', opacity: 0.5 }}>
-            Xiamen Jiageng Innovation Laboratory
+            Tan Kah Kee Innovation Laboratory
           </span>
         </footer>
       )}
