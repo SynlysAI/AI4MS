@@ -2239,7 +2239,7 @@ const apps = [
     icon: '🔬',
     accentColor: '#3b82f6',
     accentColorClass: '#93c5fd',
-    url: 'https://specagent.wumiaox.com',
+    url: 'https://specagent.xmuzc.com',
   },
   {
     name: '高分子研发',
@@ -2247,7 +2247,7 @@ const apps = [
     icon: '🧬',
     accentColor: '#8b5cf6',
     accentColorClass: '#c4b5fd',
-    url: 'https://specpoly.wumiaox.com',
+    url: 'https://specpoly.xmuzc.com',
   },
   {
     name: '实验自动化监控',
@@ -2255,7 +2255,7 @@ const apps = [
     icon: '🖥️',
     accentColor: '#10b981',
     accentColorClass: '#6ee7b7',
-    url: 'https://speclabos.wumiaox.com',
+    url: 'https://speclabos.xmuzc.com',
   },
 ]
 

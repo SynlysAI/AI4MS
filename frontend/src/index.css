@@ -37,6 +37,7 @@
   --accent-blue-text: #93c5fd;
   --accent-purple-text: #c4b5fd;
   --accent-green-text: #6ee7b7;
+  --accent-orange-text: #fbbf24;
 
   --success: rgba(110, 231, 183, 0.65);
   --danger: rgba(248, 113, 113, 0.60);
@@ -90,6 +91,7 @@ html.light {
   --accent-blue-text: #2563eb;
   --accent-purple-text: #7c3aed;
   --accent-green-text: #059669;
+  --accent-orange-text: #d97706;
 
   --success: #059669;
   --danger: #dc2626;

@@ -77,9 +77,9 @@ AI4MS/
 
 | 平台 | 链接 |
 |------|------|
-| 🔬 智能谱学分析 | https://specagent.wumiaox.com |
-| 🧬 高分子研发 | https://specpoly.wumiaox.com |
-| 🖥️ 实验自动化监控 | https://speclabos.wumiaox.com |
+| 🔬 智能谱学分析 | https://specagent.xmuzc.com |
+| 🧬 高分子研发 | https://specpoly.xmuzc.com |
+| 🖥️ 实验自动化监控 | https://speclabos.xmuzc.com |
 
 点击卡片时自动携带 Token 跳转，子平台校验通过后直接登录（SSO）。
 

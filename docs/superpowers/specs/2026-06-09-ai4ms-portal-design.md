@@ -16,9 +16,9 @@ AI4MS（AI for Molecular Science）统一门户，作为嘉庚创新实验室材
 
 | 名称 | 链接 | 说明 |
 |------|------|------|
-| 智能谱学分析平台 | https://specagent.wumiaox.com | NMR/IR/Raman/GPC/LCMS |
-| 高分子研发平台 | https://specpoly.wumiaox.com | 配方设计/工艺优化/性能预测 |
-| 实验自动化监控系统 | https://speclabos.wumiaox.com | 设备管理/工作流编排/参数下发 |
+| 智能谱学分析平台 | https://specagent.xmuzc.com | NMR/IR/Raman/GPC/LCMS |
+| 高分子研发平台 | https://specpoly.xmuzc.com | 配方设计/工艺优化/性能预测 |
+| 实验自动化监控系统 | https://speclabos.xmuzc.com | 设备管理/工作流编排/参数下发 |
 
 ## 2. 技术栈
 

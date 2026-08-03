@@ -10,7 +10,7 @@ const APPS = [
     icon: '🔬',
     accentColor: '#3b82f6',
     accentTextClass: 'var(--accent-blue-text)',
-    url: 'https://specagent.wumiaox.com',
+    url: 'https://specagent.xmuzc.com',
   },
   {
     name: '高分子研发',
@@ -18,7 +18,7 @@ const APPS = [
     icon: '🧬',
     accentColor: '#8b5cf6',
     accentTextClass: 'var(--accent-purple-text)',
-    url: 'https://polyagent.wumiaox.com',
+    url: 'https://polyagent.xmuzc.com',
   },
   {
     name: '实验自动化监控',
@@ -26,7 +26,15 @@ const APPS = [
     icon: '🖥️',
     accentColor: '#10b981',
     accentTextClass: 'var(--accent-green-text)',
-    url: 'https://speclabos.wumiaox.com',
+    url: 'https://speclabos.xmuzc.com',
+  },
+  {
+    name: 'RAG 知识库',
+    description: ['文档上传 · 解析追踪', '知识库统计 · 历史回写'],
+    icon: '📚',
+    accentColor: '#f59e0b',
+    accentTextClass: 'var(--accent-orange-text)',
+    url: 'https://ragportal.xmuzc.com/sso',
   },
 ]
 
