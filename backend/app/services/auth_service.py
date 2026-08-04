@@ -93,7 +93,12 @@ def register(invite_code: str, username: str, password: str,
         raise
 
     UserRepository.update_login_time(user.user_id)
-    token = generate_access_token(user.user_id, user.username, user.role)
+    token = generate_access_token(
+        user.user_id,
+        user.username,
+        user.role,
+        user.organization,
+    )
     return {
         "token": token,
         "user": {
@@ -126,7 +131,12 @@ def login(username: str, password: str) -> dict:
     if not _verify_password(password, user["password_hash"]):
         raise ValueError("用户名或密码错误")
     UserRepository.update_login_time(user["user_id"])
-    token = generate_access_token(user["user_id"], user["username"], user["role"])
+    token = generate_access_token(
+        user["user_id"],
+        user["username"],
+        user["role"],
+        user.get("organization", ""),
+    )
     return {
         "token": token,
         "user": {

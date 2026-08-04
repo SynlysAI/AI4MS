@@ -31,13 +31,19 @@ def _get_secret() -> bytes:
     return hashlib.sha256(material).digest()
 
 
-def generate_access_token(user_id: str, username: str, role: str) -> str:
+def generate_access_token(
+    user_id: str,
+    username: str,
+    role: str,
+    organization: str = "",
+) -> str:
     """生成自签名 access token。
 
     Args:
         user_id: 用户唯一 ID。
         username: 用户名。
         role: 用户角色（admin 或 user）。
+        organization: 用户所属组织。
 
     Returns:
         伪 JWT 格式的 token 字符串。
@@ -48,6 +54,7 @@ def generate_access_token(user_id: str, username: str, role: str) -> str:
         "sub": user_id,
         "username": username,
         "role": role,
+        "organization": organization,
         "iat": now,
         "exp": now + expire_hours * 3600,
     }
