@@ -57,7 +57,11 @@ export default function AppCard({
       />
 
       {/* 内容 */}
-      <div className="text-4xl mb-5">{icon}</div>
+      <img
+        src={icon}
+        alt=""
+        className="w-full h-[108px] mb-5 object-contain pointer-events-none select-none"
+      />
       <div
         className="text-[15px] font-normal tracking-[1px] mb-2.5"
         style={{ color: accentTextClass }}
