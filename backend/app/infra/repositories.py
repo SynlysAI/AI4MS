@@ -8,8 +8,13 @@ from pymongo import ReturnDocument
 from pymongo.collection import Collection
 from pymongo.errors import DuplicateKeyError
 
-from app.infra.mongo import get_users_collection, get_invite_codes_collection
+from app.infra.mongo import (
+    get_users_collection,
+    get_invite_codes_collection,
+    get_feedbacks_collection,
+)
 from app.models.identity import UserRecord, InviteCodeRecord, UserRole, UserStatus
+from app.models.feedback import FeedbackRecord, FeedbackStatus
 
 
 def _gen_id(prefix: str) -> str:
@@ -161,3 +166,56 @@ class InviteCodeRepository:
     @staticmethod
     def list_all() -> list[dict]:
         return list(InviteCodeRepository.get_collection().find().sort("created_at", -1))
+
+
+class FeedbackRepository:
+    """用户反馈数据访问层（MongoDB feedbacks 集合）。"""
+
+    @staticmethod
+    def get_collection() -> Collection:
+        return get_feedbacks_collection()
+
+    @staticmethod
+    def create(platform: str, feedback_type: str, content: str,
+               user_id: str, username: str, organization: str) -> FeedbackRecord:
+        """新建一条反馈记录，提交人信息取提交时刻快照。"""
+        now = datetime.now(UTC)
+        doc = {
+            "feedback_id": _gen_id("fb"),
+            "platform": platform,
+            "feedback_type": feedback_type,
+            "content": content,
+            "user_id": user_id,
+            "username": username,
+            "organization": organization,
+            "status": "open",
+            "created_at": now,
+            "updated_at": now,
+        }
+        FeedbackRepository.get_collection().insert_one(doc)
+        return FeedbackRecord(**doc)
+
+    @staticmethod
+    def list_all() -> list[dict]:
+        return list(FeedbackRepository.get_collection().find().sort("created_at", -1))
+
+    @staticmethod
+    def find_by_feedback_id(feedback_id: str) -> Optional[dict]:
+        return FeedbackRepository.get_collection().find_one({"feedback_id": feedback_id})
+
+    @staticmethod
+    def update_status(feedback_id: str, status: FeedbackStatus) -> int:
+        """更新处理状态，返回匹配的文档数（0 或 1）。"""
+        result = FeedbackRepository.get_collection().update_one(
+            {"feedback_id": feedback_id},
+            {"$set": {"status": status, "updated_at": datetime.now(UTC)}},
+        )
+        return result.matched_count
+
+    @staticmethod
+    def delete(feedback_id: str) -> int:
+        """删除反馈，返回删除的文档数（0 或 1）。"""
+        result = FeedbackRepository.get_collection().delete_one(
+            {"feedback_id": feedback_id},
+        )
+        return result.deleted_count

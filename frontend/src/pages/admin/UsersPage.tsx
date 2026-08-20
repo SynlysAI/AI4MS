@@ -62,6 +62,15 @@ export default function UsersPage() {
               >
                 邀请码管理
               </Link>
+              <Link
+                to="/admin/feedback"
+                className="text-[13px] pb-2 transition-colors duration-200"
+                style={{ color: 'var(--text-muted)' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+              >
+                反馈管理
+              </Link>
             </div>
           </div>
           <span className="text-[11px]" style={{ color: 'var(--text-muted)', opacity: 0.8 }}>

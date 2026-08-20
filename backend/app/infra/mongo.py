@@ -32,6 +32,7 @@ def init_mongo(uri: str, db_name: str) -> None:
     _ensure_index("users", "user_id")
     _ensure_index("invite_codes", "invite_code")
     _ensure_index("invite_codes", "invite_id")
+    _ensure_index("feedbacks", "feedback_id")
 
 
 def close_mongo() -> None:
@@ -55,3 +56,10 @@ def get_invite_codes_collection() -> Collection:
     if _db is None:
         raise RuntimeError("数据库未初始化，请先调用 init_mongo()")
     return _db.get_collection("invite_codes")
+
+
+def get_feedbacks_collection() -> Collection:
+    """获取 feedbacks 集合。"""
+    if _db is None:
+        raise RuntimeError("数据库未初始化，请先调用 init_mongo()")
+    return _db.get_collection("feedbacks")

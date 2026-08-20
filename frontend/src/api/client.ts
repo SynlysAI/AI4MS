@@ -76,6 +76,21 @@ export interface InviteCode {
   created_at?: string
 }
 
+export type FeedbackPlatform = 'spec_agent' | 'poly_agent' | 'speclabos' | 'ragportal'
+export type FeedbackType = 'bug' | 'ux' | 'idea' | 'other'
+
+export interface FeedbackInfo {
+  feedback_id: string
+  platform: FeedbackPlatform
+  feedback_type: FeedbackType
+  content: string
+  user_id?: string
+  username: string
+  organization?: string
+  status: 'open' | 'done'
+  created_at?: string
+}
+
 /* ── API 响应通用结构 ── */
 
 interface ApiResponse<T> {
@@ -126,4 +141,17 @@ export const adminApi = {
 
   deleteInviteCode: (inviteId: string) =>
     apiClient.delete(`/admin/invite-codes/${inviteId}`),
+}
+
+/* ── Feedback API ── */
+
+export const feedbackApi = {
+  list: () =>
+    apiClient.get('/feedback') as Promise<ApiResponse<FeedbackInfo[]>>,
+
+  updateStatus: (feedbackId: string, status: 'open' | 'done') =>
+    apiClient.patch(`/feedback/${feedbackId}/status`, { status }),
+
+  remove: (feedbackId: string) =>
+    apiClient.delete(`/feedback/${feedbackId}`),
 }

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { adminApi, type InviteCode } from '@/api/client'
 import { formatDate, inviteStatusLabel } from '@/lib/utils'
+import Select from '@/components/Select'
 
 export default function InvitesPage() {
   const [codes, setCodes] = useState<InviteCode[]>([])
@@ -79,6 +80,12 @@ export default function InvitesPage() {
                     style={{ color: 'var(--accent-purple-text)', borderColor: 'rgba(139,92,246,0.25)' }}>
                 邀请码管理
               </span>
+              <Link to="/admin/feedback" className="text-[13px] pb-2 transition-colors duration-200"
+                    style={{ color: 'var(--text-muted)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}>
+                反馈管理
+              </Link>
             </div>
           </div>
           <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={openDialog}
@@ -212,11 +219,9 @@ export default function InvitesPage() {
                   {/* 角色 */}
                   <div>
                     <label className="text-[10px] mb-1.5 block tracking-wide" style={{ color: 'var(--text-muted)' }}>角色</label>
-                    <select value={role} onChange={(e) => setRole(e.target.value as 'admin' | 'user')}
-                      className={`${inputClass} appearance-none cursor-pointer`} style={inputStyle('var(--border-focus)')}>
-                      <option value="user">用户</option>
-                      <option value="admin">管理员</option>
-                    </select>
+                    <Select fullWidth value={role}
+                      onChange={(v) => setRole(v as 'admin' | 'user')}
+                      options={[{ value: 'user', label: '用户' }, { value: 'admin', label: '管理员' }]} />
                   </div>
                   {/* 最大使用次数 */}
                   <div>

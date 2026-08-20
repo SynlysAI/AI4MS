@@ -7,6 +7,7 @@ import HomePage from '@/pages/HomePage'
 import NotFoundPage from '@/pages/NotFoundPage'
 import UsersPage from '@/pages/admin/UsersPage'
 import InvitesPage from '@/pages/admin/InvitesPage'
+import FeedbackPage from '@/pages/admin/FeedbackPage'
 
 /** 需要登录才能访问的路由守卫。 */
 function AuthGuard({
@@ -68,6 +69,14 @@ export const router = createBrowserRouter([
         element: (
           <AuthGuard requireAdmin>
             <InvitesPage />
+          </AuthGuard>
+        ),
+      },
+      {
+        path: '/admin/feedback',
+        element: (
+          <AuthGuard requireAdmin>
+            <FeedbackPage />
           </AuthGuard>
         ),
       },

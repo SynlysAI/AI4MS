@@ -110,6 +110,21 @@ export default function UserNav() {
                 >
                   邀请码管理
                 </button>
+                <button
+                  onClick={() => { navigate('/admin/feedback'); setOpen(false) }}
+                  className="w-full text-left px-4 py-2.5 text-xs transition-colors duration-150"
+                  style={{ color: 'var(--text-secondary)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'var(--bg-hover)'
+                    e.currentTarget.style.color = 'var(--text-primary)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.color = 'var(--text-secondary)'
+                  }}
+                >
+                  反馈管理
+                </button>
                 <div className="mx-3 my-1" style={{ borderTop: `1px solid var(--border-subtle)` }} />
               </>
             )}
