@@ -5,9 +5,9 @@ import { useThemeStore } from '@/stores/themeStore'
 import StarFieldBg from '@/components/StarFieldBg'
 import UserNav from '@/components/UserNav'
 
-/* 平台操作指导文档（飞书知识库） */
+/* 平台操作指导文档（飞书知识库·AI4MS操作手册目录） */
 const GUIDE_DOC_URL =
-  'https://gcnpf55d0gns.feishu.cn/wiki/Cvhfwf7FPimLSEkWvgKcF5Yfn8c?fromScene=spaceOverview'
+  'https://gcnpf55d0gns.feishu.cn/wiki/QahEwHcyAi7HrNkpr7ncEI8Xnqf'
 
 /** 全局布局：深空背景 + 光晕装饰 + 顶栏导航 + 页面内容。 */
 export default function Layout() {
