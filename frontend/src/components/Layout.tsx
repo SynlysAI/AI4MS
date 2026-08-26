@@ -5,6 +5,10 @@ import { useThemeStore } from '@/stores/themeStore'
 import StarFieldBg from '@/components/StarFieldBg'
 import UserNav from '@/components/UserNav'
 
+/* 平台操作指导文档（飞书知识库） */
+const GUIDE_DOC_URL =
+  'https://gcnpf55d0gns.feishu.cn/wiki/Cvhfwf7FPimLSEkWvgKcF5Yfn8c?fromScene=spaceOverview'
+
 /** 全局布局：深空背景 + 光晕装饰 + 顶栏导航 + 页面内容。 */
 export default function Layout() {
   const initialize = useAuthStore((s) => s.initialize)
@@ -144,6 +148,25 @@ export default function Layout() {
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                 </svg>
               )}
+            </button>
+
+            {/* 操作指导按钮：新窗口打开飞书指导文档 */}
+            <button
+              onClick={() => window.open(GUIDE_DOC_URL, '_blank', 'noopener,noreferrer')}
+              className="w-7 h-7 rounded-full flex items-center justify-center
+                         transition-all duration-200 hover:scale-110"
+              style={{
+                background: 'var(--bg-input)',
+                border: `1px solid var(--border-input)`,
+              }}
+              title="操作指导"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                   strokeLinejoin="round" style={{ color: 'var(--text-secondary)' }}>
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
             </button>
 
             {isAuthenticated ? (
