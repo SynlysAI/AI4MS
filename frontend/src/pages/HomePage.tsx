@@ -7,7 +7,7 @@ const APPS = [
   {
     name: '智能谱学分析',
     description: ['NMR · IR · Raman', 'GPC · LCMS'],
-    icon: '/icons/spec-analysis.png',
+    icon: '/icons/spec-analysis.png?v=1',
     accentColor: '#3b82f6',
     accentTextClass: 'var(--accent-blue-text)',
     url: 'https://specagent.xmuzc.com',
@@ -15,7 +15,7 @@ const APPS = [
   {
     name: '高分子研发',
     description: ['配方设计 · 工艺优化', '性能预测 · 实验方案'],
-    icon: '/icons/polymer-rd.png',
+    icon: '/icons/polymer-rd.png?v=1',
     accentColor: '#8b5cf6',
     accentTextClass: 'var(--accent-purple-text)',
     url: 'https://polyagent.xmuzc.com',
@@ -23,7 +23,7 @@ const APPS = [
   {
     name: '实验自动化监控',
     description: ['设备管理 · 工作流编排', '参数下发 · 实时监控'],
-    icon: '/icons/lab-automation.png',
+    icon: '/icons/lab-automation.png?v=1',
     accentColor: '#10b981',
     accentTextClass: 'var(--accent-green-text)',
     url: 'https://speclabos.xmuzc.com',
@@ -31,7 +31,7 @@ const APPS = [
   {
     name: 'RAG 知识库',
     description: ['文档上传 · 解析追踪', '知识库统计 · 历史回写'],
-    icon: '/icons/rag-knowledge.png',
+    icon: '/icons/rag-knowledge.png?v=1',
     accentColor: '#f59e0b',
     accentTextClass: 'var(--accent-orange-text)',
     url: 'https://ragportal.xmuzc.com/sso',
