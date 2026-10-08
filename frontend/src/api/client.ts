@@ -76,7 +76,7 @@ export interface InviteCode {
   created_at?: string
 }
 
-export type FeedbackPlatform = 'spec_agent' | 'poly_agent' | 'speclabos' | 'ragportal'
+export type FeedbackPlatform = 'spec_agent' | 'poly_agent' | 'speclabos' | 'ragportal' | 'plane'
 export type FeedbackType = 'bug' | 'ux' | 'idea' | 'other'
 
 export interface FeedbackInfo {
@@ -87,7 +87,7 @@ export interface FeedbackInfo {
   user_id?: string
   username: string
   organization?: string
-  status: 'open' | 'done'
+  status: 'open' | 'in_progress' | 'done' | 'closed'
   created_at?: string
 }
 
@@ -149,8 +149,8 @@ export const feedbackApi = {
   list: () =>
     apiClient.get('/feedback') as Promise<ApiResponse<FeedbackInfo[]>>,
 
-  updateStatus: (feedbackId: string, status: 'open' | 'done') =>
-    apiClient.patch(`/feedback/${feedbackId}/status`, { status }),
+  updateStatus: (feedbackId: string, status: FeedbackInfo['status'], comment = '') =>
+    apiClient.patch(`/feedback/${feedbackId}/status`, { status, comment }),
 
   remove: (feedbackId: string) =>
     apiClient.delete(`/feedback/${feedbackId}`),

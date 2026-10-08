@@ -6,6 +6,7 @@ import { formatDateTime } from '@/lib/utils'
 import Select from '@/components/Select'
 
 const PLATFORM_META: Record<FeedbackPlatform, { emoji: string; name: string; color: string }> = {
+  plane: { emoji: '', name: '科研工作区', color: 'var(--text-primary)' },
   spec_agent: { emoji: '🔬', name: '智能谱学分析', color: 'var(--accent-blue-text)' },
   poly_agent: { emoji: '🧬', name: '高分子研发', color: 'var(--accent-green-text)' },
   speclabos: { emoji: '🖥️', name: '实验自动化监控', color: 'var(--accent-orange-text)' },
@@ -21,7 +22,8 @@ const TYPE_META: Record<FeedbackType, { label: string; color: string; bg: string
 
 type PlatformFilter = '' | FeedbackPlatform
 type TypeFilter = '' | FeedbackType
-type StatusFilter = '' | 'open' | 'done'
+type StatusFilter = '' | FeedbackInfo['status']
+const STATUS_LABELS = { open: '待处理', in_progress: '处理中', done: '已解决', closed: '已关闭' }
 
 /** 反馈管理页 — 四个子平台提交的意见统一查看与处理。 */
 export default function FeedbackPage() {
@@ -59,9 +61,11 @@ export default function FeedbackPage() {
   const openCount = useMemo(() => feedbacks.filter((f) => f.status === 'open').length, [feedbacks])
 
   const toggleStatus = async (fb: FeedbackInfo) => {
+    const comment = window.prompt('填写处置说明')
+    if (!comment?.trim()) return
     setOperating(true)
     try {
-      await feedbackApi.updateStatus(fb.feedback_id, fb.status === 'open' ? 'done' : 'open')
+      await feedbackApi.updateStatus(fb.feedback_id, fb.status === 'open' ? 'done' : 'open', comment.trim())
       setFeedbacks((prev) => prev.map((x) =>
         x.feedback_id === fb.feedback_id
           ? { ...x, status: x.status === 'open' ? 'done' : 'open' }
@@ -164,7 +168,9 @@ export default function FeedbackPage() {
             options={[
               { value: '', label: '全部状态' },
               { value: 'open', label: '待处理' },
-              { value: 'done', label: '已处理' },
+              { value: 'in_progress', label: '处理中' },
+              { value: 'done', label: '已解决' },
+              { value: 'closed', label: '已关闭' },
             ]}
           />
         </div>
@@ -239,7 +245,7 @@ export default function FeedbackPage() {
                             style={{ color: f.status === 'open' ? 'var(--accent-orange-text)' : 'var(--success)' }}>
                         <span className="w-1.5 h-1.5 rounded-full"
                               style={{ background: f.status === 'open' ? 'var(--accent-orange-text)' : 'var(--success)' }} />
-                        {f.status === 'open' ? '待处理' : '已处理'}
+                        {STATUS_LABELS[f.status]}
                       </span>
                     </Td>
                     <Td>
@@ -296,7 +302,7 @@ export default function FeedbackPage() {
                           value={TYPE_META[detail.feedback_type]?.label ?? detail.feedback_type}
                           color={TYPE_META[detail.feedback_type]?.color} />
                 <MetaCell label="状态"
-                          value={detail.status === 'open' ? '待处理' : '已处理'}
+                          value={STATUS_LABELS[detail.status]}
                           color={detail.status === 'open' ? 'var(--accent-orange-text)' : 'var(--success)'} />
                 <MetaCell label="提交人" value={detail.username} />
                 <MetaCell label="所属单位" value={detail.organization || '—'} />
