@@ -6,9 +6,9 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
-FeedbackStatus = Literal["open", "done"]
+FeedbackStatus = Literal["open", "in_progress", "done", "closed"]
 FeedbackType = Literal["bug", "ux", "idea", "other"]
-FeedbackPlatform = Literal["spec_agent", "poly_agent", "speclabos", "ragportal"]
+FeedbackPlatform = Literal["spec_agent", "poly_agent", "speclabos", "ragportal", "plane"]
 
 
 class FeedbackRecord(BaseModel):

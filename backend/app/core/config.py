@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     auth_token_expire_hours: int = 12
     auth_secret: str = ""
     cors_origins: str = "http://localhost:5173"
+    plane_feedback_secret: str = ""
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
