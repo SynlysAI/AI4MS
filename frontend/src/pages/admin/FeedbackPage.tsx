@@ -1,29 +1,40 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { feedbackApi, type FeedbackInfo, type FeedbackPlatform, type FeedbackType } from '@/api/client'
+import {
+  feedbackApi,
+  type FeedbackInfo,
+  type FeedbackPlatform,
+  type FeedbackStatus,
+  type FeedbackType,
+} from '@/api/client'
 import { formatDateTime } from '@/lib/utils'
 import Select from '@/components/Select'
 
-const PLATFORM_META: Record<FeedbackPlatform, { emoji: string; name: string; color: string }> = {
-  plane: { emoji: '', name: '科研工作区', color: 'var(--text-primary)' },
-  spec_agent: { emoji: '🔬', name: '智能谱学分析', color: 'var(--accent-blue-text)' },
-  poly_agent: { emoji: '🧬', name: '高分子研发', color: 'var(--accent-green-text)' },
-  speclabos: { emoji: '🖥️', name: '实验自动化监控', color: 'var(--accent-orange-text)' },
-  ragportal: { emoji: '📚', name: '知识库文档', color: 'var(--accent-purple-text)' },
+const PLATFORM_META: Record<FeedbackPlatform, { name: string }> = {
+  spec_agent: { name: '智能谱学分析' },
+  poly_agent: { name: '高分子研发' },
+  speclabos: { name: '实验自动化监控' },
+  ragportal: { name: '知识库文档' },
 }
 
-const TYPE_META: Record<FeedbackType, { label: string; color: string; bg: string }> = {
-  bug: { label: '功能异常', color: '#f87171', bg: 'rgba(248,113,113,0.1)' },
-  ux: { label: '体验问题', color: '#fbbf24', bg: 'rgba(251,191,36,0.1)' },
-  idea: { label: '功能建议', color: '#6ee7b7', bg: 'rgba(16,185,129,0.1)' },
-  other: { label: '其他', color: '#94a3b8', bg: 'rgba(148,163,184,0.12)' },
+const TYPE_META: Record<FeedbackType, { label: string }> = {
+  bug: { label: '功能异常' },
+  ux: { label: '体验问题' },
+  idea: { label: '功能建议' },
+  other: { label: '其他' },
+}
+
+const STATUS_LABELS: Record<FeedbackStatus, string> = {
+  open: '待处理',
+  in_progress: '处理中',
+  done: '已解决',
+  closed: '已关闭',
 }
 
 type PlatformFilter = '' | FeedbackPlatform
 type TypeFilter = '' | FeedbackType
-type StatusFilter = '' | FeedbackInfo['status']
-const STATUS_LABELS = { open: '待处理', in_progress: '处理中', done: '已解决', closed: '已关闭' }
+type StatusFilter = '' | FeedbackStatus
 
 /** 反馈管理页 — 四个子平台提交的意见统一查看与处理。 */
 export default function FeedbackPage() {
@@ -36,6 +47,8 @@ export default function FeedbackPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('')
 
   const [detail, setDetail] = useState<FeedbackInfo | null>(null)
+  const [statusDraft, setStatusDraft] = useState<FeedbackStatus>('in_progress')
+  const [comment, setComment] = useState('')
   const [operating, setOperating] = useState(false)
 
   const fetchFeedbacks = async () => {
@@ -60,20 +73,17 @@ export default function FeedbackPage() {
 
   const openCount = useMemo(() => feedbacks.filter((f) => f.status === 'open').length, [feedbacks])
 
-  const toggleStatus = async (fb: FeedbackInfo) => {
-    const comment = window.prompt('填写处置说明')
-    if (!comment?.trim()) return
+  const updateStatus = async (fb: FeedbackInfo, status: FeedbackStatus, statusComment: string) => {
+    if (!statusComment.trim()) return
     setOperating(true)
     try {
-      await feedbackApi.updateStatus(fb.feedback_id, fb.status === 'open' ? 'done' : 'open', comment.trim())
+      await feedbackApi.updateStatus(fb.feedback_id, status, statusComment.trim())
       setFeedbacks((prev) => prev.map((x) =>
-        x.feedback_id === fb.feedback_id
-          ? { ...x, status: x.status === 'open' ? 'done' : 'open' }
-          : x,
+        x.feedback_id === fb.feedback_id ? { ...x, status } : x,
       ))
-      setDetail((d) => d && d.feedback_id === fb.feedback_id
-        ? { ...d, status: d.status === 'open' ? 'done' : 'open' }
-        : d)
+      setDetail(null)
+      setStatusDraft('in_progress')
+      setComment('')
     } catch {
       setError('操作失败，请重试')
     } finally {
@@ -126,7 +136,7 @@ export default function FeedbackPage() {
                 邀请码管理
               </Link>
               <span className="text-[13px] pb-2 border-b"
-                    style={{ color: 'var(--accent-green-text)', borderColor: 'rgba(16,185,129,0.25)' }}>
+                    style={{ color: 'var(--text-primary)', borderColor: 'var(--border-strong)' }}>
                 反馈管理
               </span>
             </div>
@@ -151,7 +161,7 @@ export default function FeedbackPage() {
             onChange={(v) => setPlatformFilter(v as PlatformFilter)}
             options={[
               { value: '', label: '全部平台' },
-              ...Object.entries(PLATFORM_META).map(([key, m]) => ({ value: key, label: `${m.emoji} ${m.name}` })),
+              ...Object.entries(PLATFORM_META).map(([key, meta]) => ({ value: key, label: meta.name })),
             ]}
           />
           <Select
@@ -167,10 +177,10 @@ export default function FeedbackPage() {
             onChange={(v) => setStatusFilter(v as StatusFilter)}
             options={[
               { value: '', label: '全部状态' },
-              { value: 'open', label: '待处理' },
-              { value: 'in_progress', label: '处理中' },
-              { value: 'done', label: '已解决' },
-              { value: 'closed', label: '已关闭' },
+              ...(Object.keys(STATUS_LABELS) as FeedbackStatus[]).map((value) => ({
+                value,
+                label: STATUS_LABELS[value],
+              })),
             ]}
           />
         </div>
@@ -207,22 +217,18 @@ export default function FeedbackPage() {
                   <tr key={f.feedback_id}
                       className="cursor-pointer transition-colors duration-150"
                       style={{ borderBottom: `1px solid var(--border-subtle)`, color: 'var(--text-secondary)' }}
-                      onClick={() => setDetail(f)}
+                      onClick={() => {
+                        setDetail(f)
+                        setStatusDraft(f.status === 'open' ? 'in_progress' : f.status)
+                        setComment('')
+                      }}
                       onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
                     <Td>
-                      <span className="inline-flex items-center gap-1.5 text-xs"
-                            style={{ color: PLATFORM_META[f.platform]?.color }}>
-                        <span>{PLATFORM_META[f.platform]?.emoji}</span>
-                        {PLATFORM_META[f.platform]?.name ?? f.platform}
-                      </span>
+                      <span className="text-xs">{PLATFORM_META[f.platform]?.name ?? f.platform}</span>
                     </Td>
                     <Td>
-                      <span className="text-[10px] px-2.5 py-0.5 rounded-full whitespace-nowrap"
-                            style={{
-                              color: TYPE_META[f.feedback_type]?.color,
-                              background: TYPE_META[f.feedback_type]?.bg,
-                            }}>
+                      <span className="text-xs whitespace-nowrap">
                         {TYPE_META[f.feedback_type]?.label ?? f.feedback_type}
                       </span>
                     </Td>
@@ -241,24 +247,22 @@ export default function FeedbackPage() {
                       </span>
                     </Td>
                     <Td>
-                      <span className="inline-flex items-center gap-1.5 text-xs whitespace-nowrap"
-                            style={{ color: f.status === 'open' ? 'var(--accent-orange-text)' : 'var(--success)' }}>
-                        <span className="w-1.5 h-1.5 rounded-full"
-                              style={{ background: f.status === 'open' ? 'var(--accent-orange-text)' : 'var(--success)' }} />
-                        {STATUS_LABELS[f.status]}
-                      </span>
+                      <span className="text-xs whitespace-nowrap">{STATUS_LABELS[f.status]}</span>
                     </Td>
                     <Td>
                       <div className="flex gap-3" onClick={(e) => e.stopPropagation()}>
                         <button
-                          onClick={() => toggleStatus(f)}
-                          disabled={operating}
+                          onClick={() => {
+                            setDetail(f)
+                            setStatusDraft(f.status === 'open' ? 'in_progress' : f.status)
+                            setComment('')
+                          }}
                           className="text-xs tracking-wide transition-opacity duration-200 disabled:opacity-50"
-                          style={{ color: f.status === 'open' ? 'var(--success)' : 'var(--accent-orange-text)' }}
+                          style={{ color: 'var(--text-secondary)' }}
                           onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
                           onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                         >
-                          {f.status === 'open' ? '标记已处理' : '重新打开'}
+                          查看处置
                         </button>
                         <button
                           onClick={() => handleDelete(f)}
@@ -296,14 +300,10 @@ export default function FeedbackPage() {
               {/* 元信息 */}
               <div className="grid grid-cols-3 gap-2.5">
                 <MetaCell label="提交平台"
-                          value={`${PLATFORM_META[detail.platform]?.emoji ?? ''} ${PLATFORM_META[detail.platform]?.name ?? detail.platform}`}
-                          color={PLATFORM_META[detail.platform]?.color} />
+                          value={PLATFORM_META[detail.platform]?.name ?? detail.platform} />
                 <MetaCell label="反馈类型"
-                          value={TYPE_META[detail.feedback_type]?.label ?? detail.feedback_type}
-                          color={TYPE_META[detail.feedback_type]?.color} />
-                <MetaCell label="状态"
-                          value={STATUS_LABELS[detail.status]}
-                          color={detail.status === 'open' ? 'var(--accent-orange-text)' : 'var(--success)'} />
+                          value={TYPE_META[detail.feedback_type]?.label ?? detail.feedback_type} />
+                <MetaCell label="状态" value={STATUS_LABELS[detail.status]} />
                 <MetaCell label="提交人" value={detail.username} />
                 <MetaCell label="所属单位" value={detail.organization || '—'} />
                 <MetaCell label="提交时间" value={detail.created_at ? formatDateTime(detail.created_at) : '—'} />
@@ -315,19 +315,75 @@ export default function FeedbackPage() {
                 {detail.content}
               </div>
 
+              {detail.history?.length ? (
+                <ol className="mt-4 space-y-2 text-xs">
+                  {detail.history.map((entry, index) => (
+                    <li key={`${entry.created_at ?? index}-${entry.to_status}`}
+                        className="border-l pl-3"
+                        style={{ borderColor: 'var(--border-subtle)' }}>
+                      <p style={{ color: 'var(--text-secondary)' }}>
+                        {STATUS_LABELS[entry.from_status]} → {STATUS_LABELS[entry.to_status]} · {entry.actor_name}
+                      </p>
+                      <p style={{ color: 'var(--text-muted)' }}>{entry.comment}</p>
+                    </li>
+                  ))}
+                </ol>
+              ) : null}
+
+              <div className="mt-5 flex flex-col gap-3">
+                <label className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                  处置状态
+                  <select
+                    aria-label="处置状态"
+                    className="mt-1 w-full rounded-lg px-3 py-2 text-xs"
+                    style={{
+                      color: 'var(--text-primary)',
+                      background: 'var(--bg-surface)',
+                      border: '1px solid var(--border-default)',
+                    }}
+                    value={statusDraft}
+                    onChange={(event) => setStatusDraft(event.target.value as FeedbackStatus)}
+                  >
+                    {(Object.keys(STATUS_LABELS) as FeedbackStatus[]).map((status) => (
+                      <option key={status} value={status}>{STATUS_LABELS[status]}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                  处置说明
+                  <textarea
+                    aria-label="处置说明"
+                    className="mt-1 min-h-24 w-full rounded-lg px-3 py-2 text-xs"
+                    style={{
+                      color: 'var(--text-primary)',
+                      background: 'var(--bg-surface)',
+                      border: '1px solid var(--border-default)',
+                    }}
+                    maxLength={2000}
+                    value={comment}
+                    onChange={(event) => setComment(event.target.value)}
+                  />
+                </label>
+              </div>
+
               <div className="flex gap-3 pt-5">
                 <button onClick={() => setDetail(null)}
                         className="flex-1 rounded-lg py-2.5 text-xs transition-colors duration-200"
                         style={{ color: 'var(--text-secondary)', border: `1px solid var(--border-default)` }}
                         onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
                         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>关闭</button>
-                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                        onClick={() => toggleStatus(detail)} disabled={operating}
+                <button
+                        onClick={() => updateStatus(detail, statusDraft, comment)}
+                        disabled={operating || !comment.trim()}
                         className="flex-1 rounded-lg py-2.5 text-xs tracking-wide transition-all duration-200
                                    disabled:opacity-50 disabled:cursor-not-allowed"
-                        style={{ background: 'rgba(16,185,129,0.16)', border: '1px solid rgba(16,185,129,0.25)', color: 'var(--accent-green-text)' }}>
-                  {detail.status === 'open' ? '标记为已处理' : '重新打开'}
-                </motion.button>
+                        style={{
+                          background: 'var(--bg-hover)',
+                          border: '1px solid var(--border-default)',
+                          color: 'var(--text-primary)',
+                        }}>
+                  更新状态
+                </button>
               </div>
             </motion.div>
           </motion.div>
@@ -337,12 +393,12 @@ export default function FeedbackPage() {
   )
 }
 
-function MetaCell({ label, value, color }: { label: string; value: string; color?: string }) {
+function MetaCell({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl px-3.5 py-2.5"
          style={{ background: 'var(--bg-surface)', border: `1px solid var(--border-subtle)` }}>
       <div className="text-[10px] mb-1 tracking-wide" style={{ color: 'var(--text-muted)' }}>{label}</div>
-      <div className="text-xs truncate" style={{ color: color ?? 'var(--text-primary)' }}>{value}</div>
+      <div className="text-xs truncate" style={{ color: 'var(--text-primary)' }}>{value}</div>
     </div>
   )
 }

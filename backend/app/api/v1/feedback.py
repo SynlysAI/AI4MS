@@ -1,16 +1,18 @@
 """反馈意见 API 端点：子平台提交反馈 + 管理员查看/处理。"""
 
+from datetime import UTC, datetime
+
 from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from app.core.auth import parse_access_token, require_admin
 from app.core.config import settings
 from app.infra.repositories import FeedbackRepository
-from app.models.feedback import FeedbackPlatform, FeedbackStatus, FeedbackType
+from app.models.feedback import OWN_FEEDBACK_PLATFORMS, FeedbackPlatform, FeedbackStatus, FeedbackType
 
 router = APIRouter()
 
-FEEDBACK_PLATFORMS: set[str] = {"spec_agent", "poly_agent", "speclabos", "ragportal"}
+FEEDBACK_PLATFORMS = OWN_FEEDBACK_PLATFORMS
 FEEDBACK_TYPES: set[str] = {"bug", "ux", "idea", "other"}
 
 
@@ -20,6 +22,22 @@ class SubmitFeedbackRequest(BaseModel):
     platform: FeedbackPlatform
     feedback_type: FeedbackType
     content: str = Field(min_length=1, max_length=500)
+
+
+class UpdateFeedbackStatusRequest(BaseModel):
+    """管理员更新自有反馈状态的请求体。"""
+
+    status: FeedbackStatus
+    comment: str = Field(min_length=1, max_length=2000)
+
+    @field_validator("comment")
+    @classmethod
+    def nonempty_comment(cls, value: str):
+        """拒绝仅空白的处置说明。"""
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("处置说明不能为空")
+        return normalized
 
 
 class ApiResponse(BaseModel):
@@ -42,9 +60,7 @@ async def require_feedback_user(request: Request) -> dict:
     token = auth[7:] if auth.startswith("Bearer ") else ""
     payload = parse_access_token(token) if token else None
     if not payload:
-        raise HTTPException(
-            status_code=401, detail="登录状态已失效，请重新进入平台后再提交"
-        )
+        raise HTTPException(status_code=401, detail="登录状态已失效，请重新进入平台后再提交")
     return payload
 
 
@@ -83,36 +99,25 @@ async def list_feedbacks(
 @router.patch("/{feedback_id}/status")
 async def update_feedback_status(
     feedback_id: str,
-    req: dict,
+    req: UpdateFeedbackStatusRequest,
     admin: dict = Depends(require_admin),
 ):
-    """标记反馈为已处理/重新打开（仅管理员）。"""
-    new_status = req.get("status")
-    if new_status not in ("open", "in_progress", "done", "closed"):
-        raise HTTPException(status_code=400, detail="反馈状态无效")
+    """更新四态处理进度并追加说明历史（仅管理员）。"""
     record = FeedbackRepository.find_by_feedback_id(feedback_id)
-    comment = str(req.get("comment") or "").strip()
-    if record and record.get("platform") == "plane" and not comment:
-        raise HTTPException(422, "Plane 反馈处置必须填写说明")
-    if record:
-        from datetime import UTC, datetime
-
-        FeedbackRepository.get_collection().update_one(
-            {"feedback_id": feedback_id},
-            {
-                "$push": {
-                    "history": {
-                        "actor": admin.get("user_id", admin.get("sub", "")),
-                        "actor_name": admin.get("username", ""),
-                        "from_status": record["status"],
-                        "to_status": new_status,
-                        "comment": comment,
-                        "created_at": datetime.now(UTC),
-                    }
-                }
-            },
-        )
-    matched = FeedbackRepository.update_status(feedback_id, new_status)
+    if record is None:
+        raise HTTPException(status_code=404, detail="反馈不存在")
+    matched = FeedbackRepository.update_status(
+        feedback_id,
+        req.status,
+        {
+            "actor": admin.get("user_id", admin.get("sub", "")),
+            "actor_name": admin.get("username", ""),
+            "from_status": record["status"],
+            "to_status": req.status,
+            "comment": req.comment.strip(),
+            "created_at": datetime.now(UTC),
+        },
+    )
     if matched == 0:
         raise HTTPException(status_code=404, detail="反馈不存在")
     return ApiResponse(message="状态已更新")
@@ -124,12 +129,7 @@ async def delete_feedback(
     admin: dict = Depends(require_admin),
 ):
     """删除反馈（仅管理员）。"""
-    record = FeedbackRepository.find_by_feedback_id(feedback_id)
     deleted = FeedbackRepository.delete(feedback_id)
     if deleted == 0:
         raise HTTPException(status_code=404, detail="反馈不存在")
-    if record:
-        from app.api.v1.plane_feedback import delete_screenshots
-
-        delete_screenshots(record)
     return ApiResponse(message="反馈已删除")

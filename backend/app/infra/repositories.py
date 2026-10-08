@@ -14,7 +14,7 @@ from app.infra.mongo import (
     get_feedbacks_collection,
 )
 from app.models.identity import UserRecord, InviteCodeRecord, UserRole, UserStatus
-from app.models.feedback import FeedbackRecord, FeedbackStatus
+from app.models.feedback import OWN_FEEDBACK_PLATFORMS, FeedbackRecord, FeedbackStatus
 
 
 def _gen_id(prefix: str) -> str:
@@ -172,6 +172,11 @@ class FeedbackRepository:
     """用户反馈数据访问层（MongoDB feedbacks 集合）。"""
 
     @staticmethod
+    def _own_platform_query() -> dict:
+        """构造仅包含 AI4MS 自有子平台的查询条件。"""
+        return {"platform": {"$in": sorted(OWN_FEEDBACK_PLATFORMS)}}
+
+    @staticmethod
     def get_collection() -> Collection:
         return get_feedbacks_collection()
 
@@ -197,18 +202,36 @@ class FeedbackRepository:
 
     @staticmethod
     def list_all() -> list[dict]:
-        return list(FeedbackRepository.get_collection().find().sort("created_at", -1))
+        return list(
+            FeedbackRepository.get_collection()
+            .find(FeedbackRepository._own_platform_query())
+            .sort("created_at", -1)
+        )
 
     @staticmethod
     def find_by_feedback_id(feedback_id: str) -> Optional[dict]:
-        return FeedbackRepository.get_collection().find_one({"feedback_id": feedback_id})
+        return FeedbackRepository.get_collection().find_one(
+            {**FeedbackRepository._own_platform_query(), "feedback_id": feedback_id}
+        )
 
     @staticmethod
-    def update_status(feedback_id: str, status: FeedbackStatus) -> int:
-        """更新处理状态，返回匹配的文档数（0 或 1）。"""
+    def update_status(feedback_id: str, status: FeedbackStatus, history: dict) -> int:
+        """在同一 Mongo 更新中写入状态和处置历史。
+
+        Args:
+            feedback_id: 自有反馈 ID。
+            status: 新的四态处理状态。
+            history: 包含操作者、前后状态、说明和时间的审计条目。
+
+        Returns:
+            匹配的文档数（0 或 1）。
+        """
         result = FeedbackRepository.get_collection().update_one(
-            {"feedback_id": feedback_id},
-            {"$set": {"status": status, "updated_at": datetime.now(UTC)}},
+            {**FeedbackRepository._own_platform_query(), "feedback_id": feedback_id},
+            {
+                "$set": {"status": status, "updated_at": datetime.now(UTC)},
+                "$push": {"history": history},
+            },
         )
         return result.matched_count
 
@@ -216,6 +239,6 @@ class FeedbackRepository:
     def delete(feedback_id: str) -> int:
         """删除反馈，返回删除的文档数（0 或 1）。"""
         result = FeedbackRepository.get_collection().delete_one(
-            {"feedback_id": feedback_id},
+            {**FeedbackRepository._own_platform_query(), "feedback_id": feedback_id},
         )
         return result.deleted_count

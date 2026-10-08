@@ -1,14 +1,15 @@
 """用户反馈领域模型。"""
 
 from datetime import UTC, datetime
-from typing import Literal
+from typing import Literal, get_args
 
 from pydantic import BaseModel, Field
 
 
 FeedbackStatus = Literal["open", "in_progress", "done", "closed"]
 FeedbackType = Literal["bug", "ux", "idea", "other"]
-FeedbackPlatform = Literal["spec_agent", "poly_agent", "speclabos", "ragportal", "plane"]
+FeedbackPlatform = Literal["spec_agent", "poly_agent", "speclabos", "ragportal"]
+OWN_FEEDBACK_PLATFORMS = frozenset(get_args(FeedbackPlatform))
 
 
 class FeedbackRecord(BaseModel):

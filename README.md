@@ -83,6 +83,25 @@ AI4MS/
 
 点击卡片时自动携带 Token 跳转，子平台校验通过后直接登录（SSO）。
 
+## 反馈与版本边界
+
+- 自 2.0.0 起，AI4MS 仅管理 `Spec_Agent`、`Poly_Agent`、`SpecLabOS`、`RAGPortal` 四个子平台的文本反馈；Plane 工作区反馈由 Plane 自身的反馈 API、数据库、FileAsset/S3 与审计闭环管理。
+- 自有反馈继续保留 `open / in_progress / done / closed` 四态处置模型和处置说明历史；1.1 已存在的四态数据无需迁移。
+- 4.21 曾短暂写入 AI4MS 的 `platform=plane` 反馈仅为历史源数据，不再出现在 AI4MS 管理端，也不能通过 AI4MS API 修改或删除。默认发布前必须先在 Plane 侧执行 AI4MS 历史反馈 dry-run 预检；2026-10-09 用户明确取消该凭据门禁并授权直接发布，本轮未执行生产预检，取得凭据后仍需补做并按结果导入验收。
+- `/api/v1/plane-feedback`、Plane 专用 HMAC、GridFS 截图链路和相关环境变量已在 2.0.0 移除。
+
+### 运行后端测试
+
+```bash
+cd backend
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt pytest
+PYTHONPATH=. pytest -q
+```
+
+测试默认连接 `mongodb://127.0.0.1:27118` 的 `ai4ms_feedback_api_tests`；可用 `MONGODB_URI` 与 `MONGODB_DB` 覆盖，测试库会在每例前后清空。
+
 ## 快速开始
 
 ### 环境要求

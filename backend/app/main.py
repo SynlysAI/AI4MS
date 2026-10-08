@@ -3,7 +3,7 @@
 import os
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -20,7 +20,8 @@ async def lifespan(app: FastAPI):
     close_mongo()
 
 
-app = FastAPI(title="AI4MS Portal", version="0.1.0", lifespan=lifespan)
+APP_VERSION = "2.0.0"
+app = FastAPI(title="AI4MS Portal", version=APP_VERSION, lifespan=lifespan)
 
 # CORS — 前后端同源时可关闭，保留配置用于开发分离部署
 cors_origins = [o.strip() for o in settings.cors_origins.split(",")]
@@ -53,6 +54,8 @@ if os.path.isdir(FRONTEND_DIR):
     @app.get("/{full_path:path}")
     async def serve_spa(full_path: str):
         """SPA 回退：非 API 路径统一返回 index.html，由前端路由处理。"""
+        if full_path == "api" or full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="API 路径不存在")
         # 先尝试匹配静态文件（favicon 等）
         file_path = os.path.join(FRONTEND_DIR, full_path)
         if full_path and os.path.isfile(file_path):
